@@ -1,2 +1,2 @@
-# messaging-app
+# social-network
 Test
