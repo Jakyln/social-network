@@ -1,2 +1,2 @@
-# Projet-MESI
+# messagaging-app
 Test
