@@ -1,2 +1,2 @@
-# messagaging-app
+# messaging-app
 Test
