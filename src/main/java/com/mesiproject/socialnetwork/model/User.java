@@ -17,6 +17,35 @@ public class User {
     private String address;
     private String bio; //100 caractères de descriptions de profil
     private String relationship; //single, in couple, prefer not to say
+    private List<ChatGroup> chatGroups; //2 ou plus
+
+
+    public User() {
+    }
+
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String birthPlace, String address, String bio, String relationship, List<ChatGroup> chatGroups) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.mail = mail;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.status = status;
+        this.birthDate = birthDate;
+        this.birthPlace = birthPlace;
+        this.address = address;
+        this.bio = bio;
+        this.relationship = relationship;
+        this.chatGroups = chatGroups;
+    }
+
+    public List<ChatGroup> getChatGroups() {
+        return chatGroups;
+    }
+
+    public void setChatGroups(List<ChatGroup> chatGroups) {
+        this.chatGroups = chatGroups;
+    }
 
     public Long getId() {
         return id;

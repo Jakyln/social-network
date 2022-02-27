@@ -7,6 +7,7 @@ public class Message {
     private String text;
     private Date messageDate;
     private User sender; // mettre plus tard une list de User destinataires ?
+    private ChatGroup chatGroup;
 
 
 }
