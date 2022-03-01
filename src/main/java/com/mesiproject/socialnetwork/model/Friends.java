@@ -1,8 +1,6 @@
 package com.mesiproject.socialnetwork.model;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,42 +10,42 @@ public class Friends {
     private Long id;
     //    private List<User> users ;
     @ManyToOne
-    private User userSender ;
+    private User userMainId;
     @ManyToOne
-    private User userReceiver ;
+    private User userFriendId;
     private String name;
 //    HashMap<User, List<User>> friendsByUserMap = new HashMap<User, List<User> >();
 
 
     public Friends(Long id, User userSender, User userReceiver ) {
         this.id = id;
-        this.userSender = userSender;
-        this.userReceiver = userReceiver;
+        this.userMainId = userSender;
+        this.userFriendId = userReceiver;
         this.name = null;
     }
 
     public Friends(Long id, User userSender, User userReceiver, String name) {
         this.id = id;
-        this.userSender = userSender;
-        this.userReceiver = userReceiver;
+        this.userMainId = userSender;
+        this.userFriendId = userReceiver;
         this.name = name;
     }
 
 
     public User getUserSender() {
-        return userSender;
+        return userMainId;
     }
 
     public void setUserSender(User userSender) {
-        this.userSender = userSender;
+        this.userMainId = userSender;
     }
 
-    public User getUserReceiver() {
-        return userReceiver;
+    public User getUserFriendId() {
+        return userFriendId;
     }
 
-    public void setUserReceiver(User userReceiver) {
-        this.userReceiver = userReceiver;
+    public void setUserFriendId(User userFriendId) {
+        this.userFriendId = userFriendId;
     }
 
     public Friends() {
@@ -75,20 +73,20 @@ public class Friends {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Friends friends = (Friends) o;
-        return Objects.equals(id, friends.id) && Objects.equals(userSender, friends.userSender) && Objects.equals(userReceiver, friends.userReceiver) && Objects.equals(name, friends.name);
+        return Objects.equals(id, friends.id) && Objects.equals(userMainId, friends.userMainId) && Objects.equals(userFriendId, friends.userFriendId) && Objects.equals(name, friends.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userSender, userReceiver, name);
+        return Objects.hash(id, userMainId, userFriendId, name);
     }
 
     @Override
     public String toString() {
         return "Friends{" +
                 "id=" + id +
-                ", userSender=" + userSender +
-                ", userReceiver=" + userReceiver +
+                ", userSender=" + userMainId +
+                ", userReceiver=" + userFriendId +
                 ", name='" + name + '\'' +
                 '}';
     }

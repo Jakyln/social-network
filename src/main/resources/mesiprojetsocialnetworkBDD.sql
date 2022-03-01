@@ -47,10 +47,10 @@ CREATE TABLE `ChatGroupUser` (
 );
 
 CREATE TABLE `Friends` (
-    `UserSenderId` INT REFERENCES `User` (`id`),
-    `UserReceiverId` INT REFERENCES `User` (`id`),
-    `UserReceiverName` NVARCHAR(120),
-    PRIMARY KEY (`UserSenderId`, `UserReceiverId`)
+    `UserMainId` INT REFERENCES `User` (`id`),
+    `UserFriendId` INT REFERENCES `User` (`id`),
+    `Name` NVARCHAR(120),
+    PRIMARY KEY (`UserMainId`, `UserFriendId`)
 );
 
 
@@ -78,11 +78,11 @@ ALTER TABLE `ChatGroupUser` ADD CONSTRAINT `FK_ChatGroupId`
 -- CREATE INDEX `IFK_ChatGroupId` ON `ChatGroupUser` (`ChatGroupId`);
 
 
-ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserSenderId`
-    FOREIGN KEY (`UserSenderId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserMainId`
+    FOREIGN KEY (`UserMainId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserReceiverId`
-    FOREIGN KEY (`UserReceiverId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserFriendId`
+    FOREIGN KEY (`UserFriendId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
@@ -101,7 +101,7 @@ INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Oua
 INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (1,1);
 INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (2,1);
 
-INSERT INTO Friends(UserSenderId,UserReceiverId) VALUES (1,2)
+INSERT INTO Friends(UserMainId,UserFriendId) VALUES (1,2)
 
 
 -- INSERT INTO Friends(UserSenderId,UserReceiverId) VALUES (2,1); un user peut mettre en ami plusieurs fois le même, a corriger

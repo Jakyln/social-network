@@ -2,8 +2,6 @@ package com.mesiproject.socialnetwork.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -27,12 +25,14 @@ public class User {
     private LocalDateTime loginDate;
     @ManyToMany
     private List<ChatGroup> chatGroups; //2 ou plus
+    @OneToMany(mappedBy = "user")
+    private List<Friends> friends;
 
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode, List<Friends> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -46,6 +46,7 @@ public class User {
         this.relationship = relationship;
         this.chatGroups = chatGroups;
         this.zipCode = zipCode;
+        this.friends = friends;
         this.loginDate = LocalDateTime.now();
     }
 
@@ -160,6 +161,14 @@ public class User {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public List<Friends> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Friends> friends) {
+        this.friends = friends;
     }
 
 
