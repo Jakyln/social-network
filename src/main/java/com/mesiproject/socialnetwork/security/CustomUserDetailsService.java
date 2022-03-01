@@ -10,9 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,7 +23,48 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
+    //@Transactional(readOnly=true)
     @Override
+    /*public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if(username.trim().isEmpty()){
+            throw new UsernameNotFoundException("le nom d'utilisateur est vide");
+        }
+        User user = userService.findByUsernameOrEmail(username);
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
+        if(user==null){
+            throw new UsernameNotFoundException("L'utilisateur "+ username + " n'existe pas");
+        }
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getGrantedAuthorities(user));
+        return user;
+    }*/
+
+    public UserDetails loadUserByUsername(final String username)
+            throws UsernameNotFoundException {
+//CUSTOM USER HERE vvv
+        User user = userService.findByUsernameOrEmail(username);
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+//if you're implementing UserDetails you wouldn't need to call this method and instead return the User as it is
+        //return buildUserForAuthentication(user, authorities);
+        return user;
+    }
+
+    private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+
+        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+
+        // add user's authorities
+        for (UserRole userRole : userRoles) {
+            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+        }
+
+        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
+
+        return Result;
+    }
+
+
+
+    /*@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(username.trim().isEmpty()){
             throw new UsernameNotFoundException("le nom d'utilisateur est vide");
@@ -36,7 +80,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private List<GrantedAuthority> getGrantedAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         Role role = user.getRole();
-        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        authorities.add(new SimpleGrantedAuthority(role.getName()));
         return authorities;
-    }
+    }*/
 }

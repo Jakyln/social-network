@@ -1,25 +1,39 @@
 package com.mesiproject.socialnetwork.controller;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 
 
     /*@RequestMapping(
             method = RequestMethod.GET,
-            value = "" //URL
+            value = "/" //URL
     )
-    public String login(){
-        return "login";
+    public ModelAndView accueil(){
+        ModelAndView model = new ModelAndView("login");
+        //model.addObject("user",userService.findById(id));
+        return model;
+    }*/
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/login" //URL
+    )
+    public ModelAndView login(){
+        ModelAndView model = new ModelAndView("login");
+        //model.addObject("user",userService.findById(id));
+        return model;
+    }
+
+    /*@PostMapping(path="/login")
+    public ResponseEntity<User> loginUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+        //your imp
     }*/
 }
 

@@ -2,15 +2,15 @@ package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Friends;
+import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.FriendsService;
 import com.mesiproject.socialnetwork.service.UserService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -21,7 +21,7 @@ import javax.persistence.EntityNotFoundException;
 public class AccueilController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private ChatGroupService chatGroupService;
@@ -29,20 +29,24 @@ public class AccueilController {
     @Autowired
     private FriendsService friendsService;
 
-    /*@RequestMapping(
+    @RequestMapping(
             method = RequestMethod.GET,
-            value = "/" //URL
+            value = "/welcome" //URL
     )
-    public String accueil(){
+   /*public String accueil(){
         return "accueil";
     }*/
 
-    /*public ModelAndView accueil(){
-        ModelAndView model = new ModelAndView("accueil");
-        model.addObject("user",userService.findById(id));
+    /*public ModelAndView accueil(@RequestParam(value = "username", required = false)String username){
+        ModelAndView model = new ModelAndView("welcome");
+        //model.addObject("user",user);
         return model;
     }*/
 
-
+    public String accueil(Authentication authentication){
+        ModelAndView model = new ModelAndView("welcome");
+        //model.addObject("user",user);
+        return authentication.toString();
+    }
 
 }

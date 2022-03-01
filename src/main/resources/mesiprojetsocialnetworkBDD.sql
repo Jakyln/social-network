@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `User`
     `relationship` NVARCHAR(160) NOT NULL,
     `loginDate` DATETIME,
     `statusName` NVARCHAR(160),
-    `roleId` INT,
+    `role_id` INT,
     CONSTRAINT `PK_User` PRIMARY KEY  (`id`)
 );
 
@@ -99,14 +99,14 @@ ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserReceiverId`
     FOREIGN KEY (`UserReceiverId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `User` ADD CONSTRAINT `FK_UserRoleId`
-    FOREIGN KEY (`roleId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    FOREIGN KEY (`role_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 INSERT INTO Role (name) VALUES ('ROLE_ADMIN');
 INSERT INTO Role (name) VALUES ('ROLE_USER');
 
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,roleId) VALUES ('admin','admin','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online',1);
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,roleId) VALUES ('user','user','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb',2);
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,role_id) VALUES ('admin','admin','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online',1);
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,role_id) VALUES ('user','user','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb',2);
 
 INSERT INTO ChatGroup(name) VALUES ('The Awesome Twins');
 
