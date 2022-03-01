@@ -33,15 +33,15 @@ public class AccueilController {
             method = RequestMethod.GET,
             value = "/" //URL
     )
-    /*public String accueil(){
+    public String accueil(){
         return "accueil";
-    }*/
+    }
 
-    public ModelAndView accueil(@PathVariable Long id){
+    /*public ModelAndView accueil(){
         ModelAndView model = new ModelAndView("accueil");
         model.addObject("user",userService.findById(id));
         return model;
-    }
+    }*/
 
 
 

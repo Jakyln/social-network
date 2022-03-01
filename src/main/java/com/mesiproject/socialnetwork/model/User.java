@@ -1,5 +1,6 @@
 package com.mesiproject.socialnetwork.model;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -7,7 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username; //username et password utilisé pour se connecter
     private String password;
@@ -21,6 +25,7 @@ public class User {
     private String relationship; //single, in couple, prefer not to say
     private String zipCode;
     private LocalDateTime loginDate;
+    @ManyToMany
     private List<ChatGroup> chatGroups; //2 ou plus
 
 
