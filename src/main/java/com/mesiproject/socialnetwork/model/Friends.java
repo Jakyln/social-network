@@ -10,6 +10,7 @@ public class Friends {
     private Long id;
     //    private List<User> users ;
     @ManyToOne
+    @JoinColumn( name = "userMainId" )
     private User userMainId;
     @ManyToOne
     private User userFriendId;

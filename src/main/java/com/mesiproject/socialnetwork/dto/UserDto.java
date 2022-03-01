@@ -1,8 +1,8 @@
 package com.mesiproject.socialnetwork.dto;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.Friends;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,12 +15,13 @@ public class UserDto {
     private String bio; //100 caractères de descriptions de profil
     private String relationship; //single, in couple, prefer not to say
     private List<ChatGroup> chatGroups; //2 ou plus
+    private List<Friends> friends;
 
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String username, String firstName, String lastName, String status, String bio, String relationship, List<ChatGroup> chatGroups) {
+    public UserDto(Long id, String username, String firstName, String lastName, String status, String bio, String relationship, List<ChatGroup> chatGroups, List<Friends> friends) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -29,6 +30,7 @@ public class UserDto {
         this.bio = bio;
         this.relationship = relationship;
         this.chatGroups = chatGroups;
+        this.friends = friends;
     }
 
 

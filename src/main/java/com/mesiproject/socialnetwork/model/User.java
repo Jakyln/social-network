@@ -1,8 +1,11 @@
 package com.mesiproject.socialnetwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,8 +28,10 @@ public class User {
     private LocalDateTime loginDate;
     @ManyToMany
     private List<ChatGroup> chatGroups; //2 ou plus
-    @OneToMany(mappedBy = "user")
-    private List<Friends> friends;
+
+    @JsonIgnoreProperties("userMainId")
+    @OneToMany(mappedBy = "userMainId")
+    private List<Friends> friends = new ArrayList<>();
 
 
     public User() {
