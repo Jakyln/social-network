@@ -1,12 +1,18 @@
 package com.mesiproject.socialnetwork.model;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class ChatGroup {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ManyToMany
     private List<User> users; //2 ou plus
+    @OneToMany
     private List<Message> messages;
 
     public ChatGroup(Long id, List<User> users, List<Message> messages,String name) {

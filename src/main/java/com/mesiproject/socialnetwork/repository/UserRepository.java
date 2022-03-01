@@ -1,5 +1,6 @@
 package com.mesiproject.socialnetwork.repository;
 
+import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

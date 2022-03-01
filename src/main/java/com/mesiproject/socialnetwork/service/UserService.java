@@ -1,5 +1,7 @@
 package com.mesiproject.socialnetwork.service;
 
+import com.mesiproject.socialnetwork.dto.UserDto;
+import com.mesiproject.socialnetwork.model.Friends;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,13 @@ public class UserService {
         return user.get();
     }
 
-    public User creerUser(User user) {
+    public User createUser(User user) {
         return userRepository.save(user);
     }
 
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
 
     public void deleteUser(Long id) { //fonction pour admin ou quand user veut supprimer son compte
         userRepository.deleteById(id);

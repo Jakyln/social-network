@@ -24,12 +24,18 @@ public class ChatGroupService {
         return chatGroup.get();
     }
 
-    public ChatGroup creerChatGroup(ChatGroup chatGroup) {
+    public ChatGroup createChatGroup(ChatGroup chatGroup) {
         return chatGroupRepository.save(chatGroup);
     }
 
 
+    public ChatGroup updateChatGroup(ChatGroup chatGroup) {
+        return chatGroupRepository.save(chatGroup);
+    }
+
     public void deleteChatGroup(Long id) {
         chatGroupRepository.deleteById(id);
     }
+
+
 }

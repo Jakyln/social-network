@@ -1,14 +1,20 @@
 package com.mesiproject.socialnetwork.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
     private LocalDateTime messageDate;
+    @ManyToOne
     private User sender; // mettre plus tard une list de User destinataires ?
+    @ManyToOne
     private ChatGroup chatGroup;
 
     public Message(Long id, String text, Date messageDate, User sender, ChatGroup chatGroup) {
