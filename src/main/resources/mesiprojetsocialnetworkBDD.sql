@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS `User`
     `mail` NVARCHAR(160) NOT NULL,
     `firstName` NVARCHAR(160) NOT NULL,
     `lastName` NVARCHAR(160) NOT NULL,
-    `birthDate` NVARCHAR(160) NOT NULL,
+    `birthDate` DATE NOT NULL,
     `zipCode` NVARCHAR(160) NOT NULL,
     `address` NVARCHAR(160) NOT NULL,
     `bio` NVARCHAR(160) NOT NULL,
     `relationship` NVARCHAR(160) NOT NULL,
-    `loginDate` DATE,
+    `loginDate` DATETIME,
     `statusName` NVARCHAR(160),
     CONSTRAINT `PK_User` PRIMARY KEY  (`id`)
 );
@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS `ChatGroup`
     `name` NVARCHAR(120)
     );
 
-CREATE TABLE IF NOT EXISTS `Messages`
+CREATE TABLE IF NOT EXISTS `Message`
 (
     `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `text` NVARCHAR(120),
-    `messageDate` NVARCHAR(120),
+    `messageDate` DATETIME,
     `ChatGroup_id` INT NOT NULL,
     `UserSender_id` INT NOT NULL
 );
@@ -49,18 +49,19 @@ CREATE TABLE `ChatGroupUser` (
 CREATE TABLE `Friends` (
     `UserSenderId` INT REFERENCES `User` (`id`),
     `UserReceiverId` INT REFERENCES `User` (`id`),
+    `UserReceiverName` NVARCHAR(120),
     PRIMARY KEY (`UserSenderId`, `UserReceiverId`)
 );
 
 
-ALTER TABLE `Messages` ADD CONSTRAINT `FK_MessagesChatGroupId`
+ALTER TABLE `Message` ADD CONSTRAINT `FK_MessageChatGroupId`
     FOREIGN KEY (`ChatGroup_id`) REFERENCES `ChatGroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- CREATE INDEX `IFK_MessagesChatGroupId` ON `Messages` (`ChatGroup_id`);
 
 
 
-ALTER TABLE `Messages` ADD CONSTRAINT `FK_UserId`
+ALTER TABLE `Message` ADD CONSTRAINT `FK_UserId`
     FOREIGN KEY (`UserSender_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- CREATE INDEX `IFK_MessagesUserId` ON `Messages` (`UserSender_id`);
@@ -86,15 +87,15 @@ ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserReceiverId`
 
 
 
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest1','1234','test@gmail.com','Tim','Smith','17/07/2000','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online');
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest2','1235','test2@gmail.com','Marc','Ray','15/02/2005','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb');
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest1','1234','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online');
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest2','1235','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb');
 
 INSERT INTO ChatGroup(name) VALUES ('The Awesome Twins');
 
-INSERT INTO Messages(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Hey Salut Marc !','2022-02-13 13:00:00','1','1');
-INSERT INTO Messages(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Salut Tim!','2022-02-13 14:00:00','1','2');
-INSERT INTO Messages(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Ca va ?','2022-02-13 15:00:00','1','1');
-INSERT INTO Messages(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Ouais !','2022-02-13 16:00:00','1','2');
+INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Hey Salut Marc !','2022-02-13 13:00:00','1','1');
+INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Salut Tim!','2022-02-13 14:00:00','1','2');
+INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Ca va ?','2022-02-13 15:00:00','1','1');
+INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Ouais !','2022-02-13 16:00:00','1','2');
 
 
 INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (1,1);
