@@ -1,6 +1,9 @@
 package com.mesiproject.socialnetwork.model;
 
-import java.util.Date;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,32 +14,34 @@ public class User {
     private String mail; // utilisé si oublié mdp
     private String firstName;
     private String lastName;
-    private String status; // online ou offline
+    private String statusName; // online ou offline
     private Date birthDate;
-    private String birthPlace;
     private String address;
     private String bio; //100 caractères de descriptions de profil
     private String relationship; //single, in couple, prefer not to say
+    private String zipCode;
+    private LocalDateTime loginDate;
     private List<ChatGroup> chatGroups; //2 ou plus
 
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String birthPlace, String address, String bio, String relationship, List<ChatGroup> chatGroups) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.mail = mail;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.status = status;
+        this.statusName = status;
         this.birthDate = birthDate;
-        this.birthPlace = birthPlace;
         this.address = address;
         this.bio = bio;
         this.relationship = relationship;
         this.chatGroups = chatGroups;
+        this.zipCode = zipCode;
+        this.loginDate = LocalDateTime.now();
     }
 
     public List<ChatGroup> getChatGroups() {
@@ -96,11 +101,11 @@ public class User {
     }
 
     public String getStatus() {
-        return status;
+        return statusName;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.statusName = status;
     }
 
     public Date getBirthDate() {
@@ -111,13 +116,6 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
 
     public String getAddress() {
         return address;
@@ -143,18 +141,35 @@ public class User {
         this.relationship = relationship;
     }
 
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(status, user.status) && Objects.equals(birthDate, user.birthDate) && Objects.equals(birthPlace, user.birthPlace) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(statusName, user.statusName) && Objects.equals(birthDate, user.birthDate) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship) && Objects.equals(zipCode, user.zipCode) && Objects.equals(loginDate, user.loginDate) && Objects.equals(chatGroups, user.chatGroups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, mail, firstName, lastName, status, birthDate, birthPlace, address, bio, relationship);
+        return Objects.hash(id, username, password, mail, firstName, lastName, statusName, birthDate, address, bio, relationship, zipCode, loginDate, chatGroups);
     }
 
     @Override
@@ -166,12 +181,14 @@ public class User {
                 ", mail='" + mail + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", status='" + status + '\'' +
+                ", statusName='" + statusName + '\'' +
                 ", birthDate=" + birthDate +
-                ", birthPlace='" + birthPlace + '\'' +
                 ", address='" + address + '\'' +
                 ", bio='" + bio + '\'' +
                 ", relationship='" + relationship + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", loginDate=" + loginDate +
+                ", chatGroups=" + chatGroups +
                 '}';
     }
 }
