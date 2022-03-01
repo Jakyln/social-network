@@ -34,7 +34,7 @@ public class AccueilController {
             value = "/" //URL
     )
     public String accueil(){
-        return "accueil";
+        return "messagerie";
     }
 
     /*public ModelAndView accueil(){
