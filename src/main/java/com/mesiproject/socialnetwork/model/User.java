@@ -2,16 +2,15 @@ package com.mesiproject.socialnetwork.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username; //username et password utilisé pour se connecter
     private String password;
@@ -25,8 +24,12 @@ public class User {
     private String relationship; //single, in couple, prefer not to say
     private String zipCode;
     private LocalDateTime loginDate;
-    @ManyToMany
-    private List<ChatGroup> chatGroups; //2 ou plus
+    @ManyToMany//(fetch = FetchType.EAGER, mappedBy = "chatGroups", cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ChatGroupUser",
+            joinColumns = @JoinColumn(name = "UserId"),
+            inverseJoinColumns = @JoinColumn(name = "ChatGroupId"))
+    private Set<ChatGroup> chatGroups; //2 ou plus
     @OneToOne
     private Role role;
 
@@ -35,7 +38,7 @@ public class User {
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode,Role role) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, Set<ChatGroup> chatGroups, String zipCode, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -53,11 +56,29 @@ public class User {
         this.role = role;
     }
 
-    public List<ChatGroup> getChatGroups() {
+    public User(User user){
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.mail = user.getMail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.statusName = user.getStatus();
+        this.birthDate = user.getBirthDate();
+        this.address = user.getAddress();
+        this.bio = user.getBio();
+        this.relationship = user.getRelationship();
+        this.chatGroups = user.getChatGroups();
+        this.zipCode = user.getZipCode();
+        this.loginDate = user.getLoginDate();
+        this.role = user.getRole();
+    }
+
+    public Set<ChatGroup> getChatGroups() {
         return chatGroups;
     }
 
-    public void setChatGroups(List<ChatGroup> chatGroups) {
+    public void setChatGroups(Set<ChatGroup> chatGroups) {
         this.chatGroups = chatGroups;
     }
 

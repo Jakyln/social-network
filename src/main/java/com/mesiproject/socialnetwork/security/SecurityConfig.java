@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,10 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    //@Qualifier("customUserDetailsService")
+
+    private CustomUserDetailsService service;
 
     @Autowired
-    @Qualifier("customUserDetailsService")
-    private UserDetailsService customUserDetailsService;
+    public SecurityConfig(CustomUserDetailsService service) {
+        this.service = service;
+    }
+
 
     /*@Override
     protected void configure (final AuthenticationManagerBuilder auth) throws Exception{
@@ -32,6 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
     }*/
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(service).passwordEncoder(passwordEncoder());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,20 +55,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
-        authManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        authManagerBuilder.userDetailsService(service).passwordEncoder(passwordEncoder());
     }
 
 
-    @Bean
-    @Override
+    //@Bean
+    /*@Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }*/
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncod.passwordEncoder();
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
     /*@Override
     protected void configure (final HttpSecurity http) throws Exception{
         // http builder configurations for authorize requests and form login

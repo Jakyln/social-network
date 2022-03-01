@@ -2,7 +2,9 @@ package com.mesiproject.socialnetwork.security;
 
 import com.mesiproject.socialnetwork.model.Role;
 import com.mesiproject.socialnetwork.model.User;
+import com.mesiproject.socialnetwork.repository.UserRepository;
 import com.mesiproject.socialnetwork.service.UserService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,11 +22,26 @@ import java.util.Set;
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private UserServiceImpl userService;
+
     @Autowired
-    private UserService userService;
+    public CustomUserDetailsService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findByUsernameOrEmail(username);
+        if (null == user || ! user.getUsername().equals(username)) {
+            throw new UsernameNotFoundException("No user present with username: " + username);
+        } else {
+
+            return new CustomUserDetails(user);
+        }
+    }
 
     //@Transactional(readOnly=true)
-    @Override
+    //@Override
     /*public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(username.trim().isEmpty()){
             throw new UsernameNotFoundException("le nom d'utilisateur est vide");
@@ -38,34 +55,35 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user;
     }*/
 
-    public UserDetails loadUserByUsername(final String username)
+    /*public CustomUserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
 //CUSTOM USER HERE vvv
         User user = userService.findByUsernameOrEmail(username);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+        List<GrantedAuthority> authorities = buildUserAuthority((Set<Role>) user.getRole());
 //if you're implementing UserDetails you wouldn't need to call this method and instead return the User as it is
         //return buildUserForAuthentication(user, authorities);
-        return user;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getGrantedAuthorities(user));
+        //return user;
     }
 
-    private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+    private List<GrantedAuthority> buildUserAuthority(Set<Role> userRoles) {
 
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
         // add user's authorities
-        for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+        for (Role userRole : userRoles) {
+            setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
         }
 
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 
         return Result;
-    }
+    }*/
 
 
 
     /*@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(username.trim().isEmpty()){
             throw new UsernameNotFoundException("le nom d'utilisateur est vide");
         }
@@ -74,7 +92,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user==null){
             throw new UsernameNotFoundException("L'utilisateur "+ username + " n'existe pas");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getGrantedAuthorities(user));
+        CustomUserDetails customUserDetails = new CustomUserDetails(user.getUsername(),user.getPassword(),user.getMail(),user.getFirstName(),user.getLastName(),user.getStatusName(),user.getBirthDate(),user.getAddress(),user.getBio(),user.getRelationship(),user.getChatGroups(),user.getZipCode(),user.getRole());
+//        CustomUserDetails customUserDetails = new CustomUserDetails(user.getUsername(),user.getPassword(),user.getMail(),user.getFirstName(),user.getLastName(),user.getStatusName(),user.getBirthDate(),user.getAddress(),user.getBio(),user.getRelationship(),user.getChatGroups(),user.getZipCode(),user.getLoginDate(),user.getRole())
+        return customUserDetails;
+       //return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getGrantedAuthorities(user));
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(User user) {

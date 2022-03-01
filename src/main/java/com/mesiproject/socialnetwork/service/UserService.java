@@ -4,6 +4,7 @@ import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.Friends;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.repository.UserRepository;
+import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
