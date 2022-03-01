@@ -1,7 +1,10 @@
 package com.mesiproject.socialnetwork.controller;
 
+import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
+import com.mesiproject.socialnetwork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,38 +14,37 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/chats")
-public class ChatController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
-    private ChatGroupService chatGroupService;
+    private UserService userService;
 
 
     @RequestMapping(
             method = RequestMethod.GET,
             value ="/{id}"
     )
-    public ModelAndView detailChat(@PathVariable Long id){
-        ModelAndView model = new ModelAndView("messagerie");
+    public ModelAndView detailUser(@PathVariable Long id){
+        ModelAndView model = new ModelAndView("userDetails");
         if(id != null){
-            model.addObject("chatGroup",chatGroupService.findById(id));
+            model.addObject("user",userService.findById(id));
             return model;
         }
-        throw new EntityNotFoundException("La discussion d'id " + id + " n'existe pas !");
+        throw new EntityNotFoundException("L'utilisateur d'id " + id + " n'existe pas !");
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/new"
     )
-    public ModelAndView newChat(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
-        ModelAndView model = new ModelAndView("newChat");
-        ChatGroup chatGroup  = new ChatGroup();
-        model.addObject("chatGroup", chatGroup);
+    public ModelAndView newUser(){ //  Pour Login création de compte
+        ModelAndView model = new ModelAndView("newUser");
+        User user  = new User();
+        model.addObject("user", user);
         return model;
     }
 
@@ -52,21 +54,21 @@ public class ChatController {
             value = "",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    public RedirectView createChatGroup(ChatGroup chatGroup){
+    public RedirectView createUser(User user){
 
         /*if(chatGroupService.checkExistsByName(chatGroup.getName())){
             throw new EntityExistsException("Il existe déjà une discussion identique en base");
         }*/
 
-        if(chatGroup.getName().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+        if(user.getUsername().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
             try {
-                if(chatGroup.getId() == null){
+                if(user.getId() == null){
                     //Création
-                    chatGroup = chatGroupService.createChatGroup(chatGroup);
+                    user = userService.createUser(user);
                 }
                 else {
                     //Modification
-                    chatGroup = chatGroupService.updateChatGroup(chatGroup);
+                    user = userService.updateUser(user);
                 }
             }
             catch(Exception e){
@@ -76,7 +78,6 @@ public class ChatController {
         else{
             throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
         }
-        return new RedirectView("/chats/" + chatGroup.getId());
+        return new RedirectView("/user/" + user.getId());
     }
-
 }
