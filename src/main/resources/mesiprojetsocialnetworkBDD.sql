@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `User`
     `bio` NVARCHAR(160) NOT NULL,
     `relationship` NVARCHAR(160) NOT NULL,
     `loginDate` DATETIME,
-    `statusName` NVARCHAR(160),
+    `status` NVARCHAR(160),
     `role_id` INT,
     CONSTRAINT `PK_User` PRIMARY KEY  (`id`)
 );
@@ -30,16 +30,9 @@ CREATE TABLE IF NOT EXISTS `User`
 CREATE TABLE IF NOT EXISTS `ChatGroup`
 (
     `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `name` NVARCHAR(120)
+    `name` NVARCHAR(120) DEFAULT NULL
     );
 
-
-
-CREATE TABLE IF NOT EXISTS `ChatGroup`
-(
-    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `name` NVARCHAR(120)
-    );
 
 CREATE TABLE IF NOT EXISTS `Message`
 (
@@ -55,16 +48,16 @@ CREATE TABLE IF NOT EXISTS `Message`
 
 -- This is the junction table.
 CREATE TABLE `ChatGroupUser` (
-    `UserId` INT REFERENCES `User` (`id`),
-    `ChatGroupId` INT REFERENCES `ChatGroup` (`id`),
+    `userId` INT REFERENCES `User` (`id`),
+    `chatGroupId` INT REFERENCES `ChatGroup` (`id`),
     PRIMARY KEY (`UserId`, `ChatGroupId`)
 );
 
 CREATE TABLE `Friends` (
-    `UserSenderId` INT REFERENCES `User` (`id`),
-    `UserReceiverId` INT REFERENCES `User` (`id`),
-    `UserReceiverName` NVARCHAR(120),
-    PRIMARY KEY (`UserSenderId`, `UserReceiverId`)
+    `userMain` INT REFERENCES `User` (`id`),
+    `userFriend` INT REFERENCES `User` (`id`),
+    `name` NVARCHAR(120) DEFAULT NULL,
+    PRIMARY KEY (`userMain`, `userFriend`)
 );
 
 
@@ -82,21 +75,21 @@ ALTER TABLE `Message` ADD CONSTRAINT `FK_UserId`
 
 
 ALTER TABLE `ChatGroupUser` ADD CONSTRAINT `FK_UserChatId`
-    FOREIGN KEY (`UserId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- CREATE INDEX `IFK_UserId` ON `ChatGroupUser` (`UserId`);
 
 ALTER TABLE `ChatGroupUser` ADD CONSTRAINT `FK_ChatGroupId`
-    FOREIGN KEY (`ChatGroupId`) REFERENCES `ChatGroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    FOREIGN KEY (`chatGroupId`) REFERENCES `ChatGroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- CREATE INDEX `IFK_ChatGroupId` ON `ChatGroupUser` (`ChatGroupId`);
 
 
-ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserSenderId`
-    FOREIGN KEY (`UserSenderId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserMain`
+    FOREIGN KEY (`userMain`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserReceiverId`
-    FOREIGN KEY (`UserReceiverId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserFriend`
+    FOREIGN KEY (`userFriend`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `User` ADD CONSTRAINT `FK_UserRoleId`
     FOREIGN KEY (`role_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -105,8 +98,8 @@ ALTER TABLE `User` ADD CONSTRAINT `FK_UserRoleId`
 INSERT INTO Role (name) VALUES ('ROLE_ADMIN');
 INSERT INTO Role (name) VALUES ('ROLE_USER');
 
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,role_id) VALUES ('admin','admin','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online',1);
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,role_id) VALUES ('user','user','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb',2);
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,status,role_id) VALUES ('admin','$2a$10$bpNMKeaQXKpJ4JVxOHWvu.tZdmCLT9nKcZreJ/ELfCgmTCyhC7GPy','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online',1);
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,status,role_id) VALUES ('user','$2a$10$TA.UfUqLa8uDeGkt95FfLeq7T5Y5vpDpzAtvJrHSLzLliY/PARXUq','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb',2);
 
 INSERT INTO ChatGroup(name) VALUES ('The Awesome Twins');
 
@@ -119,7 +112,7 @@ INSERT INTO Message(text, messageDate, ChatGroup_id, UserSender_id) VALUES ('Oua
 INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (1,1);
 INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (2,1);
 
-INSERT INTO Friends(UserSenderId,UserReceiverId) VALUES (1,2)
+INSERT INTO Friends(UserMain,UserFriend) VALUES (1,2);
 
 
 

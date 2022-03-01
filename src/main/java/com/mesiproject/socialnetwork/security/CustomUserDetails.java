@@ -1,6 +1,7 @@
 package com.mesiproject.socialnetwork.security;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.Friends;
 import com.mesiproject.socialnetwork.model.Role;
 import com.mesiproject.socialnetwork.model.User;
 import org.springframework.context.annotation.Bean;
@@ -110,6 +111,10 @@ public class CustomUserDetails extends User implements UserDetails {
 
     public Set<ChatGroup> getChatGroups() {
         return this.user.getChatGroups();
+    }
+
+    public List<Friends> getFriends() {
+        return this.user.getFriends();
     }
 
     public Role getRole() {
