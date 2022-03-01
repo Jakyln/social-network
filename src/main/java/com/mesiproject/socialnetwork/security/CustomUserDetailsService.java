@@ -2,7 +2,9 @@ package com.mesiproject.socialnetwork.security;
 
 import com.mesiproject.socialnetwork.model.Role;
 import com.mesiproject.socialnetwork.model.User;
+import com.mesiproject.socialnetwork.repository.UserRepository;
 import com.mesiproject.socialnetwork.service.UserService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,8 +22,23 @@ import java.util.Set;
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private UserServiceImpl userService;
+
     @Autowired
-    private UserService userService;
+    public CustomUserDetailsService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findByUsernameOrEmail(username);
+        if (null == user || ! user.getUsername().equals(username)) {
+            throw new UsernameNotFoundException("No user present with username: " + username);
+        } else {
+
+            return new CustomUserDetails(user);
+        }
+    }
 
     //@Transactional(readOnly=true)
     //@Override
@@ -65,7 +82,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
 
-    @Override
+    /*@Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(username.trim().isEmpty()){
             throw new UsernameNotFoundException("le nom d'utilisateur est vide");
@@ -86,5 +103,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         Role role = user.getRole();
         authorities.add(new SimpleGrantedAuthority(role.getName()));
         return authorities;
-    }
+    }*/
 }

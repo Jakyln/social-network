@@ -5,7 +5,7 @@
     <title>Welcome</title>
 </head>
 <body>
-<h1 style="width: 50%; margin: auto">WELCOME TO SPRING LABS 2017 ${user.name}</h1>
+<h1 style="width: 50%; margin: auto" th:text="|WELCOME TO SPRING LABS 2017 ${user.getFirstName()}|"></h1>
 <br/>
 <a th:href="@{/logout}">
     <button type="button">LOGOUT</button>

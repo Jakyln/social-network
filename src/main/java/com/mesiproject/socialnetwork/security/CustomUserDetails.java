@@ -2,7 +2,10 @@ package com.mesiproject.socialnetwork.security;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Role;
+import com.mesiproject.socialnetwork.model.User;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,133 +13,106 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class CustomUserDetails implements UserDetails {
-    String ROLE_PREFIX = "ROLE_";
+public class CustomUserDetails extends User implements UserDetails {
+    //String ROLE_PREFIX = "ROLE_";
 
-    private Long id;
-    private String username; //username et password utilisé pour se connecter
-    private String password;
-    private String mail; // utilisé si oublié mdp
-    private String firstName;
-    private String lastName;
-    private String statusName; // online ou offline
-    private Date birthDate;
-    private String address;
-    private String bio; //100 caractères de descriptions de profil
-    private String relationship; //single, in couple, prefer not to say
-    private String zipCode;
-    private LocalDateTime loginDate;
-    private List<ChatGroup> chatGroups; //2 ou plus
-    private Role role;
+    private static final long serialVersionUID = 1L;
+    private User user;
 
-
-    public CustomUserDetails(String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode, Role role) {
-        super();
+    public CustomUserDetails(User user){
+        super(user);
         //this.id = id;
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.statusName = status;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.bio = bio;
-        this.relationship = relationship;
-        this.chatGroups = chatGroups;
-        this.zipCode = zipCode;
-        this.loginDate = LocalDateTime.now();
-        this.role = role;
-    }
-
-    public Long getId() {
-        return id;
+        this.user = user;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return this.user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        /*List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 
         list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role));
-
-        return list;
+        return list;*/
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.user.getPassword();
+    }
+
+    public Long getId() {
+        return this.user.getId();
     }
 
     public String getMail() {
-        return mail;
+        return this.user.getMail();
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.user.getFirstName();
     }
 
     public String getLastName() {
-        return lastName;
+        return this.user.getLastName();
     }
 
     public String getStatusName() {
-        return statusName;
+        return this.user.getStatus();
     }
 
     public Date getBirthDate() {
-        return birthDate;
+        return this.user.getBirthDate();
     }
 
     public String getAddress() {
-        return address;
+        return this.user.getAddress();
     }
 
     public String getBio() {
-        return bio;
+        return this.user.getBio();
     }
 
     public String getRelationship() {
-        return relationship;
+        return this.user.getRelationship();
     }
 
     public String getZipCode() {
-        return zipCode;
+        return this.user.getZipCode();
     }
 
     public LocalDateTime getLoginDate() {
-        return loginDate;
+        return this.user.getLoginDate();
     }
 
-    public List<ChatGroup> getChatGroups() {
-        return chatGroups;
+    public Set<ChatGroup> getChatGroups() {
+        return this.user.getChatGroups();
     }
 
     public Role getRole() {
-        return role;
+        return this.user.getRole();
     }
 }

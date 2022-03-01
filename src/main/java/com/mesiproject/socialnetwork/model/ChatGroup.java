@@ -3,6 +3,7 @@ package com.mesiproject.socialnetwork.model;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class ChatGroup {
@@ -10,12 +11,12 @@ public class ChatGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany
-    private List<User> users; //2 ou plus
+    @ManyToMany(mappedBy = "chatGroups")//(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
+    private Set<User> users; //2 ou plus
     @OneToMany
     private List<Message> messages;
 
-    public ChatGroup(Long id, List<User> users, List<Message> messages,String name) {
+    public ChatGroup(Long id, Set<User> users, List<Message> messages,String name) {
         this.id = id;
         this.users = users;
         this.messages = messages;
@@ -35,11 +36,11 @@ public class ChatGroup {
 
 
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
