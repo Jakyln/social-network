@@ -29,13 +29,13 @@ public class AccueilController {
     @Autowired
     private FriendsService friendsService;
 
-    @RequestMapping(
+    /*@RequestMapping(
             method = RequestMethod.GET,
             value = "/" //URL
     )
     public String accueil(){
         return "accueil";
-    }
+    }*/
 
     /*public ModelAndView accueil(){
         ModelAndView model = new ModelAndView("accueil");

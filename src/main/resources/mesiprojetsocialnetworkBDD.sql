@@ -2,6 +2,11 @@ CREATE DATABASE IF NOT EXISTS `socialnetwork`;
 
 USE `socialnetwork`;
 
+CREATE TABLE IF NOT EXISTS `Role`
+(
+    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `name` NVARCHAR(120)
+    );
 
 CREATE TABLE IF NOT EXISTS `User`
 (
@@ -18,8 +23,17 @@ CREATE TABLE IF NOT EXISTS `User`
     `relationship` NVARCHAR(160) NOT NULL,
     `loginDate` DATETIME,
     `statusName` NVARCHAR(160),
+    `roleId` INT,
     CONSTRAINT `PK_User` PRIMARY KEY  (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `ChatGroup`
+(
+    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `name` NVARCHAR(120)
+    );
+
+
 
 CREATE TABLE IF NOT EXISTS `ChatGroup`
 (
@@ -84,11 +98,15 @@ ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserSenderId`
 ALTER TABLE `Friends` ADD CONSTRAINT `FK_UserReceiverId`
     FOREIGN KEY (`UserReceiverId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `User` ADD CONSTRAINT `FK_UserRoleId`
+    FOREIGN KEY (`roleId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+INSERT INTO Role (name) VALUES ('ROLE_ADMIN');
+INSERT INTO Role (name) VALUES ('ROLE_USER');
 
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest1','1234','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online');
-INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName) VALUES ('usertest2','1235','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb');
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,roleId) VALUES ('admin','admin','test@gmail.com','Tim','Smith','2000-07-17','11 random Street','69780','hello this is a bio','single','2022-02-13 13:00:00','online',1);
+INSERT INTO User(username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship,loginDate,statusName,roleId) VALUES ('user','user','test2@gmail.com','Marc','Ray','2005-02-15','05 random Avenue','69800','hello this is a bio2','in a relationship','2022-02-13 14:00:00','do not disturb',2);
 
 INSERT INTO ChatGroup(name) VALUES ('The Awesome Twins');
 
@@ -103,5 +121,9 @@ INSERT INTO ChatGroupUser(UserId,ChatGroupId) VALUES (2,1);
 
 INSERT INTO Friends(UserSenderId,UserReceiverId) VALUES (1,2)
 
+
+
+/*INSERT INTO public.user (id, first_name, last_name, email, password, username, role_id) VALUES (1, 'Admin', 'Admin','admin@gmail.com', '$2a$10$bpNMKeaQXKpJ4JVxOHWvu.tZdmCLT9nKcZreJ/ELfCgmTCyhC7GPy', 'admin', 1);
+INSERT INTO public.user (id, first_name, last_name, email, password, username, role_id) VALUES (2, 'User', 'User','user@gmail.com','$2a$10$TA.UfUqLa8uDeGkt95FfLeq7T5Y5vpDpzAtvJrHSLzLliY/PARXUq', 'user', 2)*/
 
 -- INSERT INTO Friends(UserSenderId,UserReceiverId) VALUES (2,1); un user peut mettre en ami plusieurs fois le même, a corriger

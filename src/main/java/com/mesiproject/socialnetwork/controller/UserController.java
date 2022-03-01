@@ -5,6 +5,7 @@ import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.UserService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import javax.persistence.EntityNotFoundException;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
 
     @RequestMapping(

@@ -27,12 +27,15 @@ public class User {
     private LocalDateTime loginDate;
     @ManyToMany
     private List<ChatGroup> chatGroups; //2 ou plus
+    @OneToOne
+    private Role role;
 
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode) {
+
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode,Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,6 +50,7 @@ public class User {
         this.chatGroups = chatGroups;
         this.zipCode = zipCode;
         this.loginDate = LocalDateTime.now();
+        this.role = role;
     }
 
     public List<ChatGroup> getChatGroups() {
@@ -162,19 +166,33 @@ public class User {
         this.zipCode = zipCode;
     }
 
+    public Role getRole() {
+        return role;
+    }
 
+    public LocalDateTime getLoginDate() {
+        return loginDate;
+    }
+
+    public void setLoginDate(LocalDateTime loginDate) {
+        this.loginDate = loginDate;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(statusName, user.statusName) && Objects.equals(birthDate, user.birthDate) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship) && Objects.equals(zipCode, user.zipCode) && Objects.equals(loginDate, user.loginDate) && Objects.equals(chatGroups, user.chatGroups);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(statusName, user.statusName) && Objects.equals(birthDate, user.birthDate) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship) && Objects.equals(zipCode, user.zipCode) && Objects.equals(loginDate, user.loginDate) && Objects.equals(chatGroups, user.chatGroups) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, mail, firstName, lastName, statusName, birthDate, address, bio, relationship, zipCode, loginDate, chatGroups);
+        return Objects.hash(id, username, password, mail, firstName, lastName, statusName, birthDate, address, bio, relationship, zipCode, loginDate, chatGroups, role);
     }
 
     @Override
@@ -194,6 +212,7 @@ public class User {
                 ", zipCode='" + zipCode + '\'' +
                 ", loginDate=" + loginDate +
                 ", chatGroups=" + chatGroups +
+                ", role=" + role +
                 '}';
     }
 }
