@@ -4,56 +4,61 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@IdClass(FriendsId.class)
 public class Friends {
-    /*@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //    private List<User> users ;*/
-    @Id
+    //    private List<User> users ;
     @ManyToOne
-    @JoinColumn( name = "UserMainId" )
-    private User userMainId;
-    @Id
+    @JoinColumn( name = "userMain" )
+    private User userMain;
     @ManyToOne
-    private User userFriendId;
+    private User userFriend;
     private String name;
 //    HashMap<User, List<User>> friendsByUserMap = new HashMap<User, List<User> >();
 
-    public Friends(/*Long id,*/ User userSender, User userReceiver, String name) {
-        //this.id = id;
-        this.userMainId = userSender;
-        this.userFriendId = userReceiver;
+
+    public Friends(Long id, User userMain, User userFriend) {
+        this.id = id;
+        this.userMain = userMain;
+        this.userFriend = userFriend;
+        this.name = null;
+    }
+
+    public Friends(Long id, User userMain, User userFriend, String name) {
+        this.id = id;
+        this.userMain = userMain;
+        this.userFriend = userFriend;
         this.name = name;
-    }
-
-
-    public User getUserSender() {
-        return userMainId;
-    }
-
-    public void setUserSender(User userSender) {
-        this.userMainId = userSender;
-    }
-
-    public User getUserFriendId() {
-        return userFriendId;
-    }
-
-    public void setUserFriendId(User userFriendId) {
-        this.userFriendId = userFriendId;
     }
 
     public Friends() {
     }
 
-    /*public Long getId() {
+    public User getUserMain() {
+        return userMain;
+    }
+
+    public void setUserMain(User userMain) {
+        this.userMain = userMain;
+    }
+
+    public User getUserFriend() {
+        return userFriend;
+    }
+
+    public void setUserFriend(User userFriend) {
+        this.userFriend = userFriend;
+    }
+
+
+    public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }*/
+    }
 
     public String getName() {
         return name;
@@ -64,25 +69,25 @@ public class Friends {
     }
 
 
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Friends friends = (Friends) o;
-        return Objects.equals(id, friends.id) &&Objects.equals(userMainId, friends.userMainId) && Objects.equals(userFriendId, friends.userFriendId) && Objects.equals(name, friends.name);
-    }*/
+        return Objects.equals(id, friends.id) && Objects.equals(userMain, friends.userMain) && Objects.equals(userFriend, friends.userFriend) && Objects.equals(name, friends.name);
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(/*id,*/ userMainId, userFriendId, name);
+        return Objects.hash(id, userMain, userFriend, name);
     }
 
     @Override
     public String toString() {
         return "Friends{" +
-                /*"id=" + id +*/
-                ", userSender=" + userMainId +
-                ", userReceiver=" + userFriendId +
+                "id=" + id +
+                ", userMain=" + userMain +
+                ", userFriend=" + userFriend +
                 ", name='" + name + '\'' +
                 '}';
     }

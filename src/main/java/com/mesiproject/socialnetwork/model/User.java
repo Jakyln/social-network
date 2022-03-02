@@ -8,44 +8,52 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username; //username et password utilisé pour se connecter
     private String password;
     private String mail; // utilisé si oublié mdp
     private String firstName;
     private String lastName;
-    private String statusName; // online ou offline
     private Date birthDate;
+    private String zipCode;
     private String address;
     private String bio; //100 caractères de descriptions de profil
     private String relationship; //single, in couple, prefer not to say
-    private String zipCode;
     private LocalDateTime loginDate;
-    @ManyToMany
-    private List<ChatGroup> chatGroups; //2 ou plus
+    private String status; // online ou offline
 
-    @JsonIgnoreProperties("userMainId")
-    @OneToMany(mappedBy = "userMainId")
+    @ManyToMany//(fetch = FetchType.EAGER, mappedBy = "chatGroups", cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ChatGroupUser",
+            joinColumns = @JoinColumn(name = "UserId"),
+            inverseJoinColumns = @JoinColumn(name = "ChatGroupId"))
+    private Set<ChatGroup> chatGroups; //2 ou plus
+    @OneToOne
+    private Role role;
+
+    @JsonIgnoreProperties("userMain")
+    @OneToMany(mappedBy = "userMain")
     private List<Friends> friends = new ArrayList<>();
 
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, String status, Date birthDate, String address, String bio, String relationship, List<ChatGroup> chatGroups, String zipCode, List<Friends> friends) {
+
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<Friends> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.mail = mail;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.statusName = status;
+        this.status = status;
         this.birthDate = birthDate;
         this.address = address;
         this.bio = bio;
@@ -54,13 +62,33 @@ public class User{
         this.zipCode = zipCode;
         this.friends = friends;
         this.loginDate = LocalDateTime.now();
+        this.role = role;
     }
 
-    public List<ChatGroup> getChatGroups() {
+    public User(User user){
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.mail = user.getMail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.status = user.getStatus();
+        this.birthDate = user.getBirthDate();
+        this.address = user.getAddress();
+        this.bio = user.getBio();
+        this.relationship = user.getRelationship();
+        this.chatGroups = user.getChatGroups();
+        this.zipCode = user.getZipCode();
+        this.loginDate = user.getLoginDate();
+        this.role = user.getRole();
+        this.friends = user.getFriends();
+    }
+
+    public Set<ChatGroup> getChatGroups() {
         return chatGroups;
     }
 
-    public void setChatGroups(List<ChatGroup> chatGroups) {
+    public void setChatGroups(Set<ChatGroup> chatGroups) {
         this.chatGroups = chatGroups;
     }
 
@@ -113,11 +141,11 @@ public class User{
     }
 
     public String getStatus() {
-        return statusName;
+        return status;
     }
 
     public void setStatus(String status) {
-        this.statusName = status;
+        this.status = status;
     }
 
     public Date getBirthDate() {
@@ -153,13 +181,6 @@ public class User{
         this.relationship = relationship;
     }
 
-    public String getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
-    }
 
     public String getZipCode() {
         return zipCode;
@@ -169,6 +190,9 @@ public class User{
         this.zipCode = zipCode;
     }
 
+    public Role getRole() {
+        return role;
+    }
     public List<Friends> getFriends() {
         return friends;
     }
@@ -178,37 +202,18 @@ public class User{
     }
 
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(statusName, user.statusName) && Objects.equals(birthDate, user.birthDate) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship) && Objects.equals(zipCode, user.zipCode) && Objects.equals(loginDate, user.loginDate) && Objects.equals(chatGroups, user.chatGroups);
+    public LocalDateTime getLoginDate() {
+        return loginDate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password, mail, firstName, lastName, statusName, birthDate, address, bio, relationship, zipCode, loginDate, chatGroups);
+    public void setLoginDate(LocalDateTime loginDate) {
+        this.loginDate = loginDate;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", mail='" + mail + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", statusName='" + statusName + '\'' +
-                ", birthDate=" + birthDate +
-                ", address='" + address + '\'' +
-                ", bio='" + bio + '\'' +
-                ", relationship='" + relationship + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", loginDate=" + loginDate +
-                ", chatGroups=" + chatGroups +
-                '}';
+    public void setRole(Role role) {
+        this.role = role;
     }
+
+    
+
 }

@@ -5,12 +5,10 @@ import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.UserService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -21,7 +19,7 @@ import javax.persistence.EntityNotFoundException;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
 
     @RequestMapping(
@@ -39,10 +37,23 @@ public class UserController {
 
     @RequestMapping(
             method = RequestMethod.GET,
+            value ="/{id}/allFriends"
+    )
+    public ModelAndView allFriends(@PathVariable Long id){
+        ModelAndView model = new ModelAndView("friendList");
+        if(id != null){
+            model.addObject("friends",userService.findById(id).getFriends());
+            return model;
+        }
+        throw new EntityNotFoundException("L'utilisateur d'id " + id + " n'existe pas !");
+    }
+
+    @RequestMapping(
+            method = RequestMethod.GET,
             value = "/new"
     )
     public ModelAndView newUser(){ //  Pour Login création de compte
-        ModelAndView model = new ModelAndView("newUser");
+        ModelAndView model = new ModelAndView("userDetails");
         User user  = new User();
         model.addObject("user", user);
         return model;
