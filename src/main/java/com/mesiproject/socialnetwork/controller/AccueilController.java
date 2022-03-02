@@ -7,17 +7,16 @@ import com.mesiproject.socialnetwork.service.FriendsService;
 import com.mesiproject.socialnetwork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
-@RestController
+@Controller
 public class AccueilController {
 
     @Autowired
@@ -29,19 +28,20 @@ public class AccueilController {
     @Autowired
     private FriendsService friendsService;
 
+    //todo url à modifier avec système de login
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/" //URL
+            value = "/acceuil/{id}" //URL
     )
-    public String accueil(){
+    /*public String accueil(){
         return "accueil";
-    }
+    }*/
 
-    /*public ModelAndView accueil(){
+    public ModelAndView accueil(@PathVariable Long id){
         ModelAndView model = new ModelAndView("accueil");
         model.addObject("user",userService.findById(id));
         return model;
-    }*/
+    }
 
 
 
