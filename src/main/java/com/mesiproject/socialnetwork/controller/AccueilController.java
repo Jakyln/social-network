@@ -35,9 +35,6 @@ public class AccueilController {
             method = RequestMethod.GET,
             value = "/welcome" //URL
     )
-   /*public String accueil(){
-        return "accueil";
-    }*/
 
     /*public ModelAndView accueil(@RequestParam(value = "username", required = false)String username){
         ModelAndView model = new ModelAndView("welcome");
