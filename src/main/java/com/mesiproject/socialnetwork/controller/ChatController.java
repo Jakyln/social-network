@@ -1,9 +1,12 @@
 package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +37,22 @@ public class ChatController {
         }
         throw new EntityNotFoundException("La discussion d'id " + id + " n'existe pas !");
     }
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value =""
+    )
+    public ModelAndView messagerie(Authentication authentication){
+        ModelAndView model = new ModelAndView("messagerie");
+        /*CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        model.addObject("user",userDetails);*/
+        return model;
+    }
+
 
     @RequestMapping(
             method = RequestMethod.GET,

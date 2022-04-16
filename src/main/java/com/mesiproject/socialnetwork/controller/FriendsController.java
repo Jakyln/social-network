@@ -10,7 +10,18 @@ public class FriendsController {
 
 
 
-    @RequestMapping(
+    /*@RequestMapping(
+            method = RequestMethod.GET,
+            value = "friends/new"
+    )
+    public ModelAndView newFriend(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
+        ModelAndView model = new ModelAndView("friendList");
+        Friends friend  = new Friends();
+        model.addObject("Friend", friend);
+        return model;
+    }*/
+
+    /*@RequestMapping(
             method = RequestMethod.GET,
             value = "friends/new"
     )
@@ -19,5 +30,5 @@ public class FriendsController {
         Friends friend  = new Friends();
         model.addObject("Friend", friend);
         return model;
-    }
+    }*/
 }

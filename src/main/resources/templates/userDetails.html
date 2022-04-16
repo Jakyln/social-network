@@ -5,11 +5,27 @@
     <title>Title</title>
 </head>
 <body>
+<table>
+    <tbody>
+    <tr>
+        <th > Nom
+            <td th:text="${user.firstName}"></td>
+        </th>
+    </tr>
+    </tbody>
+</table>
 <ul>
     <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
+    <li th:text="${user.lastName}"></li>
+    <li th:text="${user.getBirthDate()}"></li>
+    <li th:text="${user.getAddress()}"></li>
+    <li th:text="${user.getBio()}"></li>
+    <li th:text="${user.mail}"></li>
+    <li th:text="${user.getAddress()}"></li>
+    <li th:text="${user.getRelationship()}"></li>
+    <li th:text="${user.getStatus()}"></li>
+    <li th:text="${user.getRole().getName()}"></li>
+<!--    <li th:text="${user.getFriends()[0].getId()}"></li>-->
 </ul>
 </body>
 </html>

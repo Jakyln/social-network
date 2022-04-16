@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,9 +18,9 @@ public class User {
     private String username; //username et password utilisé pour se connecter
     private String password;
     private String mail; // utilisé si oublié mdp
-    private String firstName;
-    private String lastName;
-    private Date birthDate;
+    private String first_name;
+    private String last_ame;
+    private Date birth_date;
     private String zipCode;
     private String address;
     private String bio; //100 caractères de descriptions de profil
@@ -29,23 +30,27 @@ public class User {
 
     @ManyToMany//(fetch = FetchType.EAGER, mappedBy = "chatGroups", cascade = CascadeType.ALL)
     @JoinTable(
-            name = "ChatGroupUser",
-            joinColumns = @JoinColumn(name = "UserId"),
-            inverseJoinColumns = @JoinColumn(name = "ChatGroupId"))
+            name = "chatgroup_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chatgroup_id"))
     private Set<ChatGroup> chatGroups; //2 ou plus
     @OneToOne
     private Role role;
 
-    @JsonIgnoreProperties("userMain")
-    @OneToMany(mappedBy = "userMain")
-    private List<Friends> friends = new ArrayList<>();
+    /*@ManyToMany
+    @JoinTable(
+            name = "user",
+            joinColumns = @JoinColumn(name = "user_main", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "id", referencedColumnName="id"))*/
+    @OneToMany
+    private Set<Friends> friends;
 
 
     public User() {
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<Friends> friends) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,Set<Friends> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -192,11 +197,12 @@ public class User {
     public Role getRole() {
         return role;
     }
-    public List<Friends> getFriends() {
+
+    public Set<Friends> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Friends> friends) {
+    public void setFriends(Set<Friends> friends) {
         this.friends = friends;
     }
 

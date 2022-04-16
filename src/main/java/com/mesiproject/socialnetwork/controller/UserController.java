@@ -42,6 +42,7 @@ public class UserController {
     public ModelAndView allFriends(@PathVariable Long id){
         ModelAndView model = new ModelAndView("friendList");
         if(id != null){
+            //model.addObject("friends",userService.findById(id).getFriends());
             model.addObject("friends",userService.findById(id).getFriends());
             return model;
         }
