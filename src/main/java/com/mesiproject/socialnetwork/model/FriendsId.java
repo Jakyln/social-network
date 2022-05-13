@@ -4,28 +4,28 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class FriendsId implements Serializable {
-    private Long userMainId;
-    private Long userFriendId;
+    private Long userMain;
+    private Long userFriend;
 
-    public FriendsId(Long userMainId, Long userFriendId) {
-        this.userMainId = userMainId;
-        this.userFriendId = userFriendId;
+    public FriendsId(Long userMain, Long userFriend) {
+        this.userMain = userMain;
+        this.userFriend = userFriend;
     }
 
-    public Long getUserMainId() {
-        return userMainId;
+    public Long getUserMain() {
+        return userMain;
     }
 
     public void setUserMain(Long userMainId) {
-        this.userMainId = userMainId;
+        this.userMain = userMainId;
     }
 
-    public Long getUserFriendId() {
-        return userFriendId;
+    public Long getUserFriend() {
+        return userFriend;
     }
 
     public void setUserFriend(Long userFriendId) {
-        this.userFriendId = userFriendId;
+        this.userFriend = userFriendId;
     }
 
     @Override
@@ -33,11 +33,11 @@ public class FriendsId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof FriendsId)) return false;
         FriendsId friendsId = (FriendsId) o;
-        return Objects.equals(userMainId, friendsId.userMainId) && Objects.equals(userFriendId, friendsId.userFriendId);
+        return Objects.equals(userMain, friendsId.userMain) && Objects.equals(userFriend, friendsId.userFriend);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userMainId, userFriendId);
+        return Objects.hash(userMain, userFriend);
     }
 }

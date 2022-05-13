@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,16 +38,23 @@ public class User{
     @OneToOne
     private Role role;
 
-    @JsonIgnoreProperties("userMainId")
+    /*@JsonIgnoreProperties("userMainId")
     @OneToMany(mappedBy = "userMainId")
-    private List<Friends> friends = new ArrayList<>();
+    private List<User> friends = new ArrayList<>();*/
+
+    @ManyToMany
+    @JoinTable(name = "Friends",
+            joinColumns = @JoinColumn(name = "userMain"),
+            inverseJoinColumns = @JoinColumn(name = "userFriend")
+    )
+    private List<User> friends = new ArrayList<>();;
 
 
     public User() {
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<Friends> friends) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -193,11 +201,11 @@ public class User{
     public Role getRole() {
         return role;
     }
-    public List<Friends> getFriends() {
+    public List<User> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Friends> friends) {
+    public void setFriends(List<User> friends) {
         this.friends = friends;
     }
 
