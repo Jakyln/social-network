@@ -4,29 +4,24 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@IdClass(FriendsId.class)
 public class Friends {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    //    private List<User> users ;
-    @ManyToOne
-    @JoinColumn( name = "userMain" )
-    private User userMain;
-    @ManyToOne
-    private User userFriend;
+    private Long userMain;
+    @Id
+    private Long userFriend;
+
     private String name;
 //    HashMap<User, List<User>> friendsByUserMap = new HashMap<User, List<User> >();
 
 
-    public Friends(Long id, User userMain, User userFriend) {
-        this.id = id;
+    public Friends(Long userMain, Long userFriend) {
         this.userMain = userMain;
         this.userFriend = userFriend;
         this.name = null;
     }
 
-    public Friends(Long id, User userMain, User userFriend, String name) {
-        this.id = id;
+    public Friends(Long userMain, Long userFriend, String name) {
         this.userMain = userMain;
         this.userFriend = userFriend;
         this.name = name;
@@ -35,30 +30,22 @@ public class Friends {
     public Friends() {
     }
 
-    public User getUserMain() {
+    public Long getUserMain() {
         return userMain;
     }
 
-    public void setUserMain(User userMain) {
+    public void setUserMain(Long userMain) {
         this.userMain = userMain;
     }
 
-    public User getUserFriend() {
+    public Long getUserFriend() {
         return userFriend;
     }
 
-    public void setUserFriend(User userFriend) {
+    public void setUserFriend(Long userFriend) {
         this.userFriend = userFriend;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -74,18 +61,17 @@ public class Friends {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Friends friends = (Friends) o;
-        return Objects.equals(id, friends.id) && Objects.equals(userMain, friends.userMain) && Objects.equals(userFriend, friends.userFriend) && Objects.equals(name, friends.name);
+        return Objects.equals(userMain, friends.userMain) && Objects.equals(userFriend, friends.userFriend) && Objects.equals(name, friends.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userMain, userFriend, name);
+        return Objects.hash(userMain, userFriend, name);
     }
 
     @Override
     public String toString() {
         return "Friends{" +
-                "id=" + id +
                 ", userMain=" + userMain +
                 ", userFriend=" + userFriend +
                 ", name='" + name + '\'' +
