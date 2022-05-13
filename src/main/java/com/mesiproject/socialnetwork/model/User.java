@@ -37,8 +37,8 @@ public class User{
     @OneToOne
     private Role role;
 
-    @JsonIgnoreProperties("userMain")
-    @OneToMany(mappedBy = "userMain")
+    @JsonIgnoreProperties("userMainId")
+    @OneToMany(mappedBy = "userMainId")
     private List<Friends> friends = new ArrayList<>();
 
 

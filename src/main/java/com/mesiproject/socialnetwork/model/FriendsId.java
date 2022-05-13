@@ -4,20 +4,28 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class FriendsId implements Serializable {
-    private User userMainId;
-    private User userFriendId;
+    private Long userMainId;
+    private Long userFriendId;
 
-    public FriendsId(User userMainId, User userFriendId) {
+    public FriendsId(Long userMainId, Long userFriendId) {
         this.userMainId = userMainId;
         this.userFriendId = userFriendId;
     }
 
-    public User getUserMainId() {
+    public Long getUserMainId() {
         return userMainId;
     }
 
-    public void setUserMainId(User userMainId) {
+    public void setUserMain(Long userMainId) {
         this.userMainId = userMainId;
+    }
+
+    public Long getUserFriendId() {
+        return userFriendId;
+    }
+
+    public void setUserFriend(Long userFriendId) {
+        this.userFriendId = userFriendId;
     }
 
     @Override
