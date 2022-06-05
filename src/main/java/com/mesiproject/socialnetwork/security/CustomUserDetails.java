@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -85,7 +86,7 @@ public class CustomUserDetails extends User implements UserDetails {
         return this.user.getStatus();
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return this.user.getBirthDate();
     }
 
