@@ -2,6 +2,7 @@ package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.Friends;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -35,9 +37,23 @@ public class UserController {
         throw new EntityNotFoundException("L'utilisateur d'id " + id + " n'existe pas !");
     }
 
+
     @RequestMapping(
             method = RequestMethod.GET,
-            value ="/{id}/allFriends"
+            value = "/{id}/friends/newFriend"
+    )
+    public ModelAndView newFriend(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
+        ModelAndView model = new ModelAndView("newFriend");
+        Friends friend  = new Friends();
+        List<User> allUsers = userService.findAllUsers();
+        model.addObject("allUsers", allUsers);
+        return model;
+    }
+
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value ="/{id}/friends/allFriends"
     )
     public ModelAndView allFriends(@PathVariable Long id){
         ModelAndView model = new ModelAndView("friendList");
@@ -50,7 +66,7 @@ public class UserController {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/new"
+            value = "/{id}/newUser"
     )
     public ModelAndView newUser(){ //  Pour Login création de compte
         ModelAndView model = new ModelAndView("userDetails");

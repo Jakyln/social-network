@@ -85,7 +85,7 @@ public class CustomUserDetails extends User implements UserDetails {
         return this.user.getStatus();
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return this.user.getBirthDate();
     }
 

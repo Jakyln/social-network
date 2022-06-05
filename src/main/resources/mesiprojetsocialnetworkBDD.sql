@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `User`
     `mail` NVARCHAR(160) NOT NULL,
     `firstName` NVARCHAR(160) NOT NULL,
     `lastName` NVARCHAR(160) NOT NULL,
-    `birthDate` DATE NOT NULL,
+    `birthDate` NVARCHAR(160) NOT NULL,
     `zipCode` NVARCHAR(160) NOT NULL,
     `address` NVARCHAR(160) NOT NULL,
     `bio` NVARCHAR(160) NOT NULL,

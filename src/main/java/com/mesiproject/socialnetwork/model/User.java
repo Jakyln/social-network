@@ -21,7 +21,7 @@ public class User{
     private String mail; // utilisé si oublié mdp
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private String birthDate;
     private String zipCode;
     private String address;
     private String bio; //100 caractères de descriptions de profil
@@ -54,7 +54,7 @@ public class User{
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, String birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -156,11 +156,11 @@ public class User{
         this.status = status;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

@@ -1,15 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<ul>
-    <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
-    <li th:text="${user.firstName}"></li>
-</ul>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+
+        <a th:href="|${user.id}/newUser|">
+            <button type="button">Nouveau USER</button>
+        </a>
+
+        <br>
+
+        <form id="saveForm" action="/user" method="post">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <input type="hidden" th:value="${user.id}" name="id">
+                    <label for="username">username:</label>
+                    <input type="text" id="username" name="username" th:value="${user.username}">
+                    <br>
+
+                    <label for="username">password:</label>
+                    <input type="text" id="password" name="password" th:value="${user.password}">
+                    <br>
+
+                    <label for="mail">mail:</label>
+                    <input type="text" id="mail" name="mail" th:value="${user.mail}">
+                    <br>
+
+                    <label for="firstName">firstName:</label>
+                    <input type="text" id="firstName" name="firstName" th:value="${user.firstName}">
+                    <br>
+
+                    <label for="lastName">lastName:</label>
+                    <input type="text" id="lastName" name="lastName" th:value="${user.lastName}">
+                    <br>
+
+                    <label for="birthDate">birthDate:</label>
+                    <input type="text" id="birthDate" name="birthDate" th:value="${user.birthDate}">
+                    <br>
+
+                    <label for="zipCode">zipCode:</label>
+                    <input type="text" id="zipCode" name="zipCode" th:value="${user.zipCode}">
+                    <br>
+
+                    <label for="address">address:</label>
+                    <input type="text" id="address" name="address" th:value="${user.address}">
+                    <br>
+
+                    <label for="bio">bio:</label>
+                    <input type="text" id="bio" name="bio" th:value="${user.bio}">
+                    <br>
+
+                    <label for="relationship">relationship:</label>
+                    <input type="text" id="relationship" name="relationship" th:value="${user.relationship}">
+                    <br>
+
+                    <!--        <label for="role">role:</label>-->
+                    <!--        <input type="text" id="role" name="role" th:value="${user.role.name}">-->
+
+                    <!--        <br>-->
+
+                    <label for="friends">friends:</label>
+                    <br>
+
+                    <tbody th:each="userFriend : ${user.friends}">
+                    <tr>
+                        <!--        <th scope="row" th:value="${user.getId()}">Vincent Delacour</th>-->
+                        <input type="text" id="friends" name="friends" th:value="${user.username}">
+                    </tr>
+                    </tbody>
+                    <br>
+                </div>
+            </div>
+        </form>
+
+
+        <input form="saveForm" type="submit" value="Enregistrer" class="btn btn-primary">y
+
+    </body>
 </html>
