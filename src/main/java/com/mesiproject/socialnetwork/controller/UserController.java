@@ -4,11 +4,14 @@ import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Friends;
 import com.mesiproject.socialnetwork.model.User;
+import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
+import com.mesiproject.socialnetwork.service.FriendsService;
 import com.mesiproject.socialnetwork.service.UserService;
 import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -22,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private FriendsService friendsService;
 
 
     @RequestMapping(
@@ -46,8 +52,50 @@ public class UserController {
         ModelAndView model = new ModelAndView("newFriend");
         Friends friend  = new Friends();
         List<User> allUsers = userService.findAllUsers();
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
         model.addObject("allUsers", allUsers);
+        model.addObject("userLogged", userDetails);
         return model;
+    }
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/friends",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public void addFriend(Long friendId){
+        User userNewFriend = userService.findById(friendId);
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        Friends newRelation = new Friends(userDetails.getId(),friendId);
+        friendsService.addFriend(newRelation);
+        //friendsService.addFriend(userNewFriend);
+        /*if(user.getUsername().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+            try {
+                if(user.getId() == null){
+                    //Création
+                    user = userService.createUser(user);
+                }
+                else {
+                    //Modification
+                    user = userService.updateUser(user);
+                }
+            }
+            catch(Exception e){
+                throw new IllegalArgumentException("Problème lors de la sauvegarde de la discussion");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
+        }
+        return new RedirectView("/user/" + user.getId());*/
     }
 
 
