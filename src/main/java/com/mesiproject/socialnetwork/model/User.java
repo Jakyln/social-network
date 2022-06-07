@@ -47,7 +47,7 @@ public class User{
             joinColumns = @JoinColumn(name = "userMain"),
             inverseJoinColumns = @JoinColumn(name = "userFriend")
     )
-    private List<User> friends = new ArrayList<>();;
+    private List<User> friends = new ArrayList<>();
 
 
     public User() {
