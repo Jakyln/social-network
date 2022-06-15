@@ -2,6 +2,7 @@ package com.mesiproject.socialnetwork.service;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Friends;
+import com.mesiproject.socialnetwork.model.FriendsId;
 import com.mesiproject.socialnetwork.model.Message;
 import com.mesiproject.socialnetwork.repository.FriendsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ public class FriendsService {
     @Autowired
     FriendsRepository friendsRepository;
 
-    public Friends findById(Long id) {
-        Optional<Friends> friend = this.friendsRepository.findById(id);
+    public Friends findById(Long userMainId, Long userFriendId) {
+        Optional<Friends> friend = this.friendsRepository.findById(new FriendsId(userMainId, userFriendId));
         if(!friend.isPresent()){
-            throw new EntityNotFoundException("Impossible de trouver l'ami d'identifiant " + id);
+            throw new EntityNotFoundException("Impossible de trouver l'ami");
         }
         return friend.get();
     }
@@ -31,8 +32,8 @@ public class FriendsService {
         return friendsRepository.save(friend);
     }
 
-    public void deleteFriend(Long id) {
-        friendsRepository.deleteById(id);
+    public void deleteFriend(Long userMainId, Long userFriendId) {
+        friendsRepository.deleteById(new FriendsId(userMainId, userFriendId));
     }
 
 }

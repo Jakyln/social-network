@@ -1,24 +1,24 @@
 package com.mesiproject.socialnetwork.model;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-//@Embeddable
-public class ChatGroupUserKey implements Serializable {
-    /*@Column(name = "UserId")
+@Entity
+@IdClass(ChatGroupUserId.class)
+public class ChatGroupUser {
+    @Id
     Long userId;
 
-    @Column(name = "ChatGroupId")
+    @Id
     Long chatGroupId;
 
-    public ChatGroupUserKey(Long userId, Long chatGroupId) {
+    public ChatGroupUser(Long userId, Long chatGroupId) {
         this.userId = userId;
         this.chatGroupId = chatGroupId;
     }
 
-    public ChatGroupUserKey() {
+    public ChatGroupUser() {
     }
 
     public Long getUserId() {
@@ -41,7 +41,7 @@ public class ChatGroupUserKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChatGroupUserKey that = (ChatGroupUserKey) o;
+        ChatGroupUser that = (ChatGroupUser) o;
         return Objects.equals(userId, that.userId) && Objects.equals(chatGroupId, that.chatGroupId);
     }
 
@@ -56,6 +56,6 @@ public class ChatGroupUserKey implements Serializable {
                 "userId=" + userId +
                 ", chatGroupId=" + chatGroupId +
                 '}';
-    }*/
+    }
 }
 
