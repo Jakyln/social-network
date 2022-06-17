@@ -1,10 +1,11 @@
 package com.mesiproject.socialnetwork.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,14 +15,18 @@ import java.util.Set;
 @Entity
 public class User{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username; //username et password utilisé pour se connecter
     private String password;
     private String mail; // utilisé si oublié mdp
     private String firstName;
     private String lastName;
-    private Date birthDate;
+
+    //Pour que le formulaire HTML puisse insérer une date String
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate birthDate;
+
     private String zipCode;
     private String address;
     private String bio; //100 caractères de descriptions de profil
@@ -54,7 +59,7 @@ public class User{
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, Date birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, LocalDate birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -156,11 +161,11 @@ public class User{
         this.status = status;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
