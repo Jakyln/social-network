@@ -28,7 +28,7 @@
                     </thead>
                     <tbody th:each="friend : ${friends}">
                     <tr>
-                        <th scope="row" th:text="${friend.getUserFriend().getFirstName()}">Vincent Delacour</th>
+                        <th scope="row" th:text="${friend.getFirstName()}">Vincent Delacour</th>
                         <td><a href="#" class="btn btn-primary">Profil</a></td>
                     </tr>
 

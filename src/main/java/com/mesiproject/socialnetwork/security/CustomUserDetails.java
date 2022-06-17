@@ -113,7 +113,7 @@ public class CustomUserDetails extends User implements UserDetails {
         return this.user.getChatGroups();
     }
 
-    public List<Friends> getFriends() {
+    public List<User> getFriends() {
         return this.user.getFriends();
     }
 
