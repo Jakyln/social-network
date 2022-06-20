@@ -51,4 +51,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    public List<User> findAllByIdNot(Long userId) {
+        return userRepository.findAllByIdNot(userId);
+    }
+
 }

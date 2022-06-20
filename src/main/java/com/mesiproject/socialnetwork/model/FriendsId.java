@@ -7,6 +7,8 @@ public class FriendsId implements Serializable {
     private Long userMain;
     private Long userFriend;
 
+    public FriendsId() {
+    }
     public FriendsId(Long userMain, Long userFriend) {
         this.userMain = userMain;
         this.userFriend = userFriend;

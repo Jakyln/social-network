@@ -3,6 +3,7 @@ package com.mesiproject.socialnetwork.controller;
 import com.mesiproject.socialnetwork.dto.UserDto;
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Friends;
+import com.mesiproject.socialnetwork.model.FriendsId;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
@@ -51,30 +52,37 @@ public class UserController {
     public ModelAndView newFriend(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
         ModelAndView model = new ModelAndView("newFriend");
         Friends friend  = new Friends();
-        List<User> allUsers = userService.findAllUsers();
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal();
-        model.addObject("allUsers", allUsers);
+        List<User> allOtherUsersUsers = userService.findAllByIdNot(userDetails.getId());
+        for (User allOtherUsersUser : allOtherUsersUsers) {
+            System.out.println(allOtherUsersUser.getUsername());
+        }
+
+        model.addObject("allUsers", allOtherUsersUsers);
         model.addObject("userLogged", userDetails);
         return model;
     }
 
     @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/friends",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            method = RequestMethod.GET,
+            value = "friends/{id}/add"
     )
-    public void addFriend(Long friendId){
-        User userNewFriend = userService.findById(friendId);
+    public void addFriend(@PathVariable Long id){
+
+        User userNewFriend = userService.findById(id);
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal();
-        Friends newRelation = new Friends(userDetails.getId(),friendId);
+        System.out.println("Le user connecté : " + userDetails.getFirstName() + " d'id : " + userDetails.getId());
+        System.out.println("demande en ami le user : " + userNewFriend.getFirstName() + " d'id : " + id);
+        System.out.println(id);
+        Friends newRelation = new Friends(userDetails.getId(),id);
         friendsService.addFriend(newRelation);
         //friendsService.addFriend(userNewFriend);
         /*if(user.getUsername().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
