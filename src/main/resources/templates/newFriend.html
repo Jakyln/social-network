@@ -26,22 +26,25 @@
                     </tr>
                     </thead>
 
-                    <form id="formAddFriend" action="/user/friends" method="post">
+<!--                    <form id="formAddFriend" action="/user/friends" method="post">-->
                         <label>Liste des utilisateurs existants:</label>
                         <br>
 
                         <tbody th:each="user : ${allUsers}">
+<!--                        <tr>-->
+<!--                            <th scope="row" th:text="${user.getFirstName()}">Vincent Delacour</th>-->
+<!--                            <td> <input type="text" th:value="${user.id}" name="id"> </td>-->
+<!--                            <td> <input form="formAddFriend" type="submit" value="ajouter comme ami" class="btn btn-primary"> </td>-->
+<!--                        </tr>-->
+
                         <tr>
                             <input type="hidden" th:value="${user.id}" name="id">
-                            <!--        <th scope="row" th:value="${user.getId()}">Vincent Delacour</th>-->
-                            <th scope="row" th:text="${user.getFirstName()}">Vincent Delacour</th>
-<!--                            <td><a href="#" class="btn btn-primary">ajouter comme ami</a></td>-->
-                            <td> <input form="formAddFriend" type="submit" value="ajouter comme ami" class="btn btn-primary"> </td>
-
+                            <td th:text="${user.getFirstName()}">Vincent Delacour</td>
+                            <td><a th:href="|/user/friends/${user.id}/add|" class="btn btn-primary">ajouter comme ami</a></td>
                         </tr>
                         </tbody>
                         <br>
-                    </form>
+<!--                    </form>-->
                 </table>
                 <div class="row">
 <!--                    <input form="formAddFriend" type="submit" value="Enregistrer" class="btn btn-primary">-->
