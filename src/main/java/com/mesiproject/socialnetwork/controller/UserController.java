@@ -30,6 +30,9 @@ public class UserController {
     @Autowired
     private FriendsService friendsService;
 
+    @Autowired
+    private ChatGroupService chatGroupService;
+
 
     @RequestMapping(
             method = RequestMethod.GET,

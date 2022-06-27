@@ -7,12 +7,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@Table(name = "user")
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +37,13 @@ public class User{
             name = "ChatGroupUser",
             joinColumns = @JoinColumn(name = "UserId"),
             inverseJoinColumns = @JoinColumn(name = "ChatGroupId"))
-    private Set<ChatGroup> chatGroups; //2 ou plus
+    private List<ChatGroup> chatGroups; //2 ou plus
     @OneToOne
     private Role role;
+
+    /*@OneToMany(mappedBy="chatGroup")
+    private List<Message> messages = new ArrayList<>();*/
+
 
     /*@JsonIgnoreProperties("userMainId")
     @OneToMany(mappedBy = "userMainId")
@@ -59,7 +61,7 @@ public class User{
     }
 
 
-    public User(Long id, String username, String password, String mail, String firstName, String lastName, LocalDate birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,Set<ChatGroup> chatGroups,List<User> friends) {
+    public User(Long id, String username, String password, String mail, String firstName, String lastName, LocalDate birthDate, String address, String bio, String relationship,String zipCode,String status,Role role,List<ChatGroup> chatGroups,List<User> friends) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -97,11 +99,12 @@ public class User{
         this.friends = user.getFriends();
     }
 
-    public Set<ChatGroup> getChatGroups() {
+
+    public List<ChatGroup> getChatGroups() {
         return chatGroups;
     }
 
-    public void setChatGroups(Set<ChatGroup> chatGroups) {
+    public void setChatGroups(List<ChatGroup> chatGroups) {
         this.chatGroups = chatGroups;
     }
 
@@ -227,6 +230,39 @@ public class User{
         this.role = role;
     }
 
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(mail, user.mail) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(birthDate, user.birthDate) && Objects.equals(zipCode, user.zipCode) && Objects.equals(address, user.address) && Objects.equals(bio, user.bio) && Objects.equals(relationship, user.relationship) && Objects.equals(loginDate, user.loginDate) && Objects.equals(status, user.status) && Objects.equals(chatGroups, user.chatGroups) && Objects.equals(role, user.role) && Objects.equals(friends, user.friends);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, mail, firstName, lastName, birthDate, zipCode, address, bio, relationship, loginDate, status, chatGroups, role, friends);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id=").append(id);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", mail='").append(mail).append('\'');
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", birthDate=").append(birthDate);
+        sb.append(", zipCode='").append(zipCode).append('\'');
+        sb.append(", address='").append(address).append('\'');
+        sb.append(", bio='").append(bio).append('\'');
+        sb.append(", relationship='").append(relationship).append('\'');
+        sb.append(", loginDate=").append(loginDate);
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", chatGroups=").append(chatGroups);
+        sb.append(", role=").append(role);
+        sb.append(", friends=").append(friends);
+        sb.append('}');
+        return sb.toString();
+    }
 }

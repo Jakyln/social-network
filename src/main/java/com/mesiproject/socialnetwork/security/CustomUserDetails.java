@@ -110,7 +110,7 @@ public class CustomUserDetails extends User implements UserDetails {
         return this.user.getLoginDate();
     }
 
-    public Set<ChatGroup> getChatGroups() {
+    public List<ChatGroup> getChatGroups() {
         return this.user.getChatGroups();
     }
 
