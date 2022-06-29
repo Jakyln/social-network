@@ -17,17 +17,17 @@ public class Message {
     /*@ManyToOne
     @JoinColumn(name="UserSender_id", nullable=false)*/
     @Column(name = "UserSender_id")
-    private String UserSender_id; // mettre plus tard une list de User destinataires ?
+    private String userSender; // mettre plus tard une list de User destinataires ?
 
     @ManyToOne
     @JoinColumn(name="ChatGroup_id", nullable=false)
     private ChatGroup chatGroup;
 
-    public Message(Long id, String text, Date messageDate, String UserSender_id, ChatGroup chatGroup) {
+    public Message(Long id, String text, Date messageDate, String userSender, ChatGroup chatGroup) {
         this.id = id;
         this.text = text;
         this.messageDate = LocalDateTime.now();
-        this.UserSender_id = UserSender_id;
+        this.userSender = userSender;
         this.chatGroup = chatGroup;
     }
 
@@ -52,11 +52,11 @@ public class Message {
 
 
     public String getSender() {
-        return UserSender_id;
+        return userSender;
     }
 
-    public void setSender(String UserSender_id) {
-        this.UserSender_id = UserSender_id;
+    public void setSender(String userSender) {
+        this.userSender = userSender;
     }
 
     public ChatGroup getChatGroup() {
@@ -74,12 +74,12 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return Objects.equals(id, message.id) && Objects.equals(text, message.text) && Objects.equals(messageDate, message.messageDate) && Objects.equals(UserSender_id, message.UserSender_id) && Objects.equals(chatGroup, message.chatGroup);
+        return Objects.equals(id, message.id) && Objects.equals(text, message.text) && Objects.equals(messageDate, message.messageDate) && Objects.equals(userSender, message.userSender) && Objects.equals(chatGroup, message.chatGroup);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, messageDate, UserSender_id, chatGroup);
+        return Objects.hash(id, text, messageDate, userSender, chatGroup);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Message {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", messageDate=" + messageDate +
-                ", UserSender_id=" + UserSender_id +
+                ", userSender=" + userSender +
                 ", chatGroup=" + chatGroup +
                 '}';
     }

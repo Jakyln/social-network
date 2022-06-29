@@ -1,8 +1,10 @@
 package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.Message;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
+import com.mesiproject.socialnetwork.service.MessageService;
 import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/chats")
@@ -24,6 +27,9 @@ public class ChatController {
 
     @Autowired
     private ChatGroupService chatGroupService;
+
+    @Autowired
+    private MessageService messageService;
 
 
     //A enlever, il ne faut pas abuser de l'injection de services dans d'autre services
@@ -108,6 +114,18 @@ public class ChatController {
             throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
         }
         return new RedirectView("/chats/" + chatGroup.getId());
+    }
+
+
+   @RequestMapping(
+            value = "/{groupChatId}/displayAllMessagesOfGroup",
+            method = RequestMethod.GET
+    )
+    public ModelAndView findAllMessagesOfGroupChat(@PathVariable Long groupChatId){
+
+       ModelAndView model = new ModelAndView("chatGroup");
+       model.addObject("allMessages",messageService.findAllMessagesOfGroupChat(groupChatId));
+       return model;
     }
 
 }
