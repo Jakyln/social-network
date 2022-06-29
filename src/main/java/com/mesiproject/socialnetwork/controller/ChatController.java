@@ -38,7 +38,7 @@ public class ChatController {
     private UserServiceImpl userService;
 
 
-    @RequestMapping(
+/*    @RequestMapping(
             method = RequestMethod.GET,
             value ="/{id}"
     )
@@ -49,7 +49,7 @@ public class ChatController {
             return model;
         }
         throw new EntityNotFoundException("La discussion d'id " + id + " n'existe pas !");
-    }
+    }*/
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -119,7 +119,7 @@ public class ChatController {
 
 
    @RequestMapping(
-            value = "/{groupChatId}/displayAllMessagesOfGroup",
+            value = "/{groupChatId}",
             method = RequestMethod.GET
     )
     public ModelAndView findAllMessagesOfGroupChat(@PathVariable Long groupChatId){

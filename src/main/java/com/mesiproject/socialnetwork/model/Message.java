@@ -12,6 +12,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
+
     private LocalDateTime messageDate;
 
     /*@ManyToOne
@@ -23,7 +24,7 @@ public class Message {
     @JoinColumn(name="ChatGroup_id", nullable=false)
     private ChatGroup chatGroup;
 
-    public Message(Long id, String text, Date messageDate, Long userSender, ChatGroup chatGroup) {
+    public Message(Long id, String text, Long userSender, ChatGroup chatGroup) {
         this.id = id;
         this.text = text;
         this.messageDate = LocalDateTime.now();
