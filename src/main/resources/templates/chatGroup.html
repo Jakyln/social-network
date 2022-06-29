@@ -28,10 +28,20 @@
                     </tr>
                     </thead>
                     <tbody th:each="message : ${allMessages}">
-                    <tr>
-                        <th scope="row" th:text="${message.getText()}">Vincent Delacour</th>
-                        <td><a href="#" class="btn btn-primary">Le chat</a></td>
-                    </tr>
+                    <div th:if="${message.sender == userLogged.id }" >
+                        <tr class="col-lg-2 bg-primary">
+                            <th scope="row" th:text="${message.getText()}">Vincent Delacour</th>
+                            <td><a href="#" class="btn btn-primary">Le chat</a></td>
+                        </tr>
+                    </div>
+                    <div th:unless="${message.sender == userLogged.id}" >
+                        <tr class="col-lg-9 bg-secondary">
+                            <th scope="row" th:text="${message.getText()}">Vincent Delacour</th>
+                            <td><a href="#" class="btn btn-success"></a></td>
+                        </tr>
+                    </div>
+
+
 
                     </tbody>
                 </table>

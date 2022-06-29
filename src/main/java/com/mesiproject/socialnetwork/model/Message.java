@@ -17,13 +17,13 @@ public class Message {
     /*@ManyToOne
     @JoinColumn(name="UserSender_id", nullable=false)*/
     @Column(name = "UserSender_id")
-    private String userSender; // mettre plus tard une list de User destinataires ?
+    private Long userSender; // mettre plus tard une list de User destinataires ?
 
     @ManyToOne
     @JoinColumn(name="ChatGroup_id", nullable=false)
     private ChatGroup chatGroup;
 
-    public Message(Long id, String text, Date messageDate, String userSender, ChatGroup chatGroup) {
+    public Message(Long id, String text, Date messageDate, Long userSender, ChatGroup chatGroup) {
         this.id = id;
         this.text = text;
         this.messageDate = LocalDateTime.now();
@@ -51,11 +51,11 @@ public class Message {
     }
 
 
-    public String getSender() {
+    public Long getSender() {
         return userSender;
     }
 
-    public void setSender(String userSender) {
+    public void setSender(Long userSender) {
         this.userSender = userSender;
     }
 
