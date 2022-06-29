@@ -30,6 +30,9 @@ public class UserController {
     @Autowired
     private FriendsService friendsService;
 
+    @Autowired
+    private ChatGroupService chatGroupService;
+
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -71,7 +74,7 @@ public class UserController {
             method = RequestMethod.GET,
             value = "friends/{id}/add"
     )
-    public void addFriend(@PathVariable Long id){
+    public RedirectView addFriend(@PathVariable Long id){
 
         User userNewFriend = userService.findById(id);
         CustomUserDetails userDetails =
@@ -84,6 +87,7 @@ public class UserController {
         System.out.println(id);
         Friends newRelation = new Friends(userDetails.getId(),id);
         friendsService.addFriend(newRelation);
+        return new RedirectView("/user/" + userDetails.getId() + "/friends");
         //friendsService.addFriend(userNewFriend);
         /*if(user.getUsername().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
             try {
@@ -109,7 +113,7 @@ public class UserController {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value ="/{id}/friends/allFriends"
+            value ="/{id}/friends"
     )
     public ModelAndView allFriends(@PathVariable Long id){
         ModelAndView model = new ModelAndView("friendList");

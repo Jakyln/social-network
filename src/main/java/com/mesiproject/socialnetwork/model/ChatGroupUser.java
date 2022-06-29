@@ -5,11 +5,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+//@Table(name = "chatgroupuser")
 @IdClass(ChatGroupUserId.class)
 public class ChatGroupUser {
     @Id
+    @Column(name = "userId")
     Long userId;
 
+    @Column(name = "chatGroupId")
     @Id
     Long chatGroupId;
 
@@ -52,10 +55,11 @@ public class ChatGroupUser {
 
     @Override
     public String toString() {
-        return "ChatGroupUserKey{" +
-                "userId=" + userId +
-                ", chatGroupId=" + chatGroupId +
-                '}';
+        final StringBuilder sb = new StringBuilder("ChatGroupUser{");
+        sb.append("userId=").append(userId);
+        sb.append(", chatGroupId=").append(chatGroupId);
+        sb.append('}');
+        return sb.toString();
     }
 }
 

@@ -16,7 +16,7 @@
         <div class="row">
             <button type="button" onclick="history.go(-1);">GO BACK</button>
             <div class="col-lg-12">
-                <h1 style="text-align: center">Amis</h1>
+                <h1 style="text-align: center">Les Chats</h1>
                 <a th:href="|friends/newFriend|" style="float: right" class="btn btn-primary">Nouvel ami</a>
                 <table class="table table-hover table-striped">
                     <thead>
@@ -27,10 +27,10 @@
                         <th scope="col"></th>
                     </tr>
                     </thead>
-                    <tbody th:each="friend : ${friends}">
+                    <tbody th:each="chat : ${allChats}">
                     <tr>
-                        <th scope="row" th:text="${friend.getFirstName()}">Vincent Delacour</th>
-                        <td><a href="#" class="btn btn-primary">Profil</a></td>
+                        <th scope="row" th:text="${chat.name}">Vincent Delacour</th>
+                        <td><a th:href="|chats/${chat.id}|" class="btn btn-primary">Le chat</a></td>
                     </tr>
 
                     </tbody>

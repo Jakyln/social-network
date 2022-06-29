@@ -1,9 +1,15 @@
 package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.Message;
+import com.mesiproject.socialnetwork.model.User;
+import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
+import com.mesiproject.socialnetwork.service.MessageService;
+import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +19,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/chats")
@@ -21,8 +29,16 @@ public class ChatController {
     @Autowired
     private ChatGroupService chatGroupService;
 
+    @Autowired
+    private MessageService messageService;
 
-    @RequestMapping(
+
+    //A enlever, il ne faut pas abuser de l'injection de services dans d'autre services
+    @Autowired
+    private UserServiceImpl userService;
+
+
+/*    @RequestMapping(
             method = RequestMethod.GET,
             value ="/{id}"
     )
@@ -33,6 +49,28 @@ public class ChatController {
             return model;
         }
         throw new EntityNotFoundException("La discussion d'id " + id + " n'existe pas !");
+    }*/
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value =""
+    )
+    public ModelAndView getAllChats(){
+        ModelAndView model = new ModelAndView("chatsList");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
+
+        //Méthode 1 pour récupérer les chat groups d'un user avec l'id de celui-ci
+        //List<ChatGroup> allChats = chatGroupService.getChatGroupsOfUser(userDetails.getId());
+
+        //Méthode 2 : Le User chargé de Spring security n'a pas toutes les sous List d' objets (chatgroups, friends), il faut donc faire une requête de BDD pour récupérer le User entier
+        List<ChatGroup> allChats = userService.findById(userDetails.getId()).getChatGroups();
+        model.addObject("allChats",allChats);
+        return model;
     }
 
     @RequestMapping(
@@ -77,6 +115,28 @@ public class ChatController {
             throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
         }
         return new RedirectView("/chats/" + chatGroup.getId());
+    }
+
+
+   @RequestMapping(
+            value = "/{groupChatId}",
+            method = RequestMethod.GET
+    )
+    public ModelAndView findAllMessagesOfGroupChat(@PathVariable Long groupChatId){
+
+
+       CustomUserDetails userDetails =
+               (CustomUserDetails) SecurityContextHolder
+                       .getContext()
+                       .getAuthentication()
+                       .getPrincipal();
+
+       List<User> usersOfGroup = chatGroupService.findAllUsersOfChatGroup(groupChatId);
+       ModelAndView model = new ModelAndView("chatGroup");
+       model.addObject("allMessages",messageService.findAllMessagesOfGroupChat(groupChatId));
+       model.addObject("allUsers",usersOfGroup);
+       model.addObject("userLogged",userService.findById(userDetails.getId()));
+       return model;
     }
 
 }
