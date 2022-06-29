@@ -1,15 +1,21 @@
 package com.mesiproject.socialnetwork.model;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class ChatGroupUserId implements Serializable {
+    @Column(name = "userId")
     private Long userId;
+    @Column(name = "chatGroupId")
     private Long chatGroupId;
 
     public ChatGroupUserId(Long userId, Long chatGroupId) {
         this.userId = userId;
         this.chatGroupId = chatGroupId;
+    }
+
+    public ChatGroupUserId() {
     }
 
     public Long getUserId() {

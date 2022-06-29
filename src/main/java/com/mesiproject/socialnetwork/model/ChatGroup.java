@@ -6,17 +6,19 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+//@Table(name = "chatgroup")
 public class ChatGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    //@ManyToMany(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
     @ManyToMany(mappedBy = "chatGroups")//(fetch = FetchType.EAGER, mappedBy = "userId", cascade = CascadeType.ALL)
-    private Set<User> users; //2 ou plus
-    @OneToMany
+    private List<User> users; //2 ou plus
+    @OneToMany(mappedBy="chatGroup")
     private List<Message> messages;
 
-    public ChatGroup(Long id, Set<User> users, List<Message> messages,String name) {
+    public ChatGroup(Long id, List<User> users, List<Message> messages,String name) {
         this.id = id;
         this.users = users;
         this.messages = messages;
@@ -36,11 +38,11 @@ public class ChatGroup {
 
 
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
