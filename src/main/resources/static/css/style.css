@@ -12,6 +12,9 @@ body {
     height: 100%;
 }
 
+
+
+/* PAGE DE DISCUSSION */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -26,12 +29,18 @@ body {
     background-color: rgba(25, 147, 147, 0.2);
 }
 
+.navbar{
+    margin-bottom: 10vh;
+}
 .chat-thread {
     margin: 24px auto 0 auto;
+    padding-top: 12px;
     padding: 0 20px 0 0;
     list-style: none;
     overflow-y: scroll;
     overflow-x: hidden;
+    padding: 5px;
+    border-color: #ffffff !important;
 }
 
 .chat-thread li {
@@ -105,7 +114,7 @@ body {
 
 .chat-window {
     position: fixed;
-    bottom: 18px;
+    bottom: 30px;
 }
 
 .chat-window-message {
@@ -113,9 +122,10 @@ body {
     height: 48px;
     font: 32px/48px "Noto Sans", sans-serif;
     background: none;
-    color: #0AD5C1;
+    color: #ffffff;
     border: 0;
-    border-bottom: 1px solid rgba(25, 147, 147, 0.2);
+    border-bottom: 1px solid;
+    border-color: #ffffff !important;
     outline: none;
 }
 
@@ -191,3 +201,20 @@ body {
         margin-right: 0;
     }
 }
+
+
+
+
+/* PAGE DE LISTE DISC */
+
+.titre{
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 3vh;
+}
+
+.btnamis{
+    margin-bottom: 3vh;
+}
+
+
