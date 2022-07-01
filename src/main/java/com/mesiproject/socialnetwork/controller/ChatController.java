@@ -1,6 +1,7 @@
 package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.ChatGroupUser;
 import com.mesiproject.socialnetwork.model.Message;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
@@ -75,11 +76,17 @@ public class ChatController {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/new"
+            value = "/newChat"
     )
     public ModelAndView newChat(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
         ModelAndView model = new ModelAndView("newChat");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
         ChatGroup chatGroup  = new ChatGroup();
+        model.addObject("user", userDetails);
         model.addObject("chatGroup", chatGroup);
         return model;
     }
@@ -87,34 +94,30 @@ public class ChatController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "",
+            value = "/add",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    public RedirectView createChatGroup(ChatGroup chatGroup){
+    public RedirectView createChatGroup(Long userId, String chatName){
 
-        /*if(chatGroupService.checkExistsByName(chatGroup.getName())){
-            throw new EntityExistsException("Il existe déjà une discussion identique en base");
-        }*/
-
-        if(chatGroup.getName().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+        if(chatName.trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+            ChatGroup chatGroup = new ChatGroup();
             try {
-                if(chatGroup.getId() == null){
-                    //Création
-                    chatGroup = chatGroupService.createChatGroup(chatGroup);
-                }
-                else {
-                    //Modification
-                    chatGroup = chatGroupService.updateChatGroup(chatGroup);
-                }
+                chatGroup.setName(chatName);
+                /*if(chatGroupService.checkExistsByName(chatGroup.getName())){
+                    throw new EntityExistsException("Il existe déjà une discussion identique en base");
+                }*/
+                chatGroup = chatGroupService.createChatGroup(chatGroup);
+                ChatGroupUser chatGroupUser = new ChatGroupUser(userId, chatGroup.getId());
+                chatGroupUser = chatGroupService.createChatGroupUser(chatGroupUser);
             }
             catch(Exception e){
-                throw new IllegalArgumentException("Problème lors de la sauvegarde de la discussion");
+                throw new IllegalArgumentException("Problème lors de la création de la discussion");
             }
         }
         else{
             throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
         }
-        return new RedirectView("/chats/" + chatGroup.getId());
+        return new RedirectView("/chats");
     }
 
 
