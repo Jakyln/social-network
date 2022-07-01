@@ -2,6 +2,7 @@ package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
 import com.mesiproject.socialnetwork.model.Message;
+import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.MessageService;
@@ -37,7 +38,7 @@ public class ChatController {
     private UserServiceImpl userService;
 
 
-    @RequestMapping(
+/*    @RequestMapping(
             method = RequestMethod.GET,
             value ="/{id}"
     )
@@ -48,7 +49,7 @@ public class ChatController {
             return model;
         }
         throw new EntityNotFoundException("La discussion d'id " + id + " n'existe pas !");
-    }
+    }*/
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -118,13 +119,23 @@ public class ChatController {
 
 
    @RequestMapping(
-            value = "/{groupChatId}/displayAllMessagesOfGroup",
+            value = "/{groupChatId}",
             method = RequestMethod.GET
     )
     public ModelAndView findAllMessagesOfGroupChat(@PathVariable Long groupChatId){
 
+
+       CustomUserDetails userDetails =
+               (CustomUserDetails) SecurityContextHolder
+                       .getContext()
+                       .getAuthentication()
+                       .getPrincipal();
+
+       List<User> usersOfGroup = chatGroupService.findAllUsersOfChatGroup(groupChatId);
        ModelAndView model = new ModelAndView("chatGroup");
        model.addObject("allMessages",messageService.findAllMessagesOfGroupChat(groupChatId));
+       model.addObject("allUsers",usersOfGroup);
+       model.addObject("userLogged",userService.findById(userDetails.getId()));
        return model;
     }
 

@@ -3,6 +3,7 @@ package com.mesiproject.socialnetwork.service;
 import com.mesiproject.socialnetwork.model.*;
 import com.mesiproject.socialnetwork.repository.ChatGroupRepository;
 import com.mesiproject.socialnetwork.repository.ChatGroupUserRepository;
+import com.mesiproject.socialnetwork.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,10 @@ public class ChatGroupService {
 
     @Autowired
     private ChatGroupUserRepository chatGroupUserRepository;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public ChatGroup findById(Long id) {
@@ -40,7 +45,7 @@ public class ChatGroupService {
         chatGroupRepository.deleteById(id);
     }
 
-    public List<ChatGroup> getChatGroupsOfUser(Long id){
+/*    public List<ChatGroup> getChatGroupsOfUser(Long id){
         List<ChatGroupUser> chatGroupUsers = chatGroupUserRepository.findAllByUserId(id);
         List<ChatGroup> chatGroups = new ArrayList<>();
         for (ChatGroupUser chatGroupUser : chatGroupUsers ){
@@ -49,6 +54,19 @@ public class ChatGroupService {
             chatGroups.add(chatGroup.get());
         }
         return chatGroups;
+    }*/
+
+    public List<User> findAllUsersOfChatGroup(Long id){
+        List<ChatGroupUser> chatGroupUsers = chatGroupUserRepository.findAllByChatGroupId(id);
+        List<User> usersOfGroup = new ArrayList<>();
+        for (ChatGroupUser chatGroupUser : chatGroupUsers) {
+            Optional<User> user = userRepository.findById(chatGroupUser.getUserId());
+            if(user.isEmpty()){
+                throw new EntityNotFoundException("Impossible de trouver le user d'identifiant " + chatGroupUser.getUserId());
+            }
+            usersOfGroup.add(user.get());
+        }
+        return usersOfGroup;
     }
 
 

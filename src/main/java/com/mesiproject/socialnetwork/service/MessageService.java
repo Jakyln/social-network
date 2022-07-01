@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,6 @@ public class MessageService {
 
     public List<Message> findAllMessagesOfGroupChat(Long groupChatId) {
         //On veut trouver tout les messages du group, order by date (ou id ?)
-
         Optional<ChatGroup> chatGroup = chatGroupRepository.findById(groupChatId);
         if(chatGroup.isEmpty()){
             throw new EntityNotFoundException("Impossible de trouver le chatGroup d'identifiant " + groupChatId);
