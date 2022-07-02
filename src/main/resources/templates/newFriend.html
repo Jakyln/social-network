@@ -41,7 +41,10 @@
                         <tr>
                             <input type="hidden" th:value="${user.id}" name="id">
                             <td th:text="${user.getFirstName()}">Vincent Delacour</td>
-                            <td><a th:href="|/user/friends/${user.id}/add|" class="btn btn-primary">ajouter comme ami</a></td>
+                            <td>
+                                <a th:href="|/user/friends/${user.id}/add|" class="btn btn-primary">ajouter comme ami</a>
+                                <a th:href="|/user/${user.id}|" class="btn btn-info">Profil</a>
+                            </td>
                         </tr>
                         </tbody>
                         <br>
