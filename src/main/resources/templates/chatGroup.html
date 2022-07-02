@@ -73,12 +73,18 @@
    </div>
    <ul class="chat-thread border rounded p-5">
       <li class="chat-thread-item" th:each="message : ${allMessages}">
-         <p th:text="${message.getText()}"></p>
-         <!--<input type="hidden" th:value="${message.id}">-->
+         <div th:if="${message.sender == userLogged.id }" style="color:green!important;">
+            <p th:text="${message.getText()}"></p>
+         </div>
+         <div th:unless="${message.sender == userLogged.id }" >
+            <p th:text="${message.getText()}"></p>
+         </div>
+
+      <!--<input type="hidden" th:value="${message.id}">-->
       </li>
-      <li class="chat-thread-item" th:each="message : ${allMessages}">
+<!--      <li class="chat-thread-item" th:each="message : ${allMessages}">
          <p th:text="${message.getText()}"></p>
-      </li>
+      </li>-->
    </ul>
    <form class="chat-window" id="chat-window-form" method="post" th:action="|/chats/${groupChatId}/${userLogged.id}/addMessage|">
 <!--      <form class="chat-window" id="chat-window-form" method="post" th:action="@{/chats/${groupChatId}/${userLogged.id}/addMessage}">-->

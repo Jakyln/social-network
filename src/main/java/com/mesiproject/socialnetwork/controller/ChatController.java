@@ -166,4 +166,20 @@ public class ChatController {
         System.out.println(groupChatId);*/
     }
 
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/{id}/delete"
+    )
+    public RedirectView deleteChatGroup(@PathVariable Long id) {
+
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        chatGroupService.deleteChatGroup(id);
+        return new RedirectView("/chats");
+    }
+
 }

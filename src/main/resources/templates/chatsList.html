@@ -56,7 +56,10 @@
                     <tbody th:each="chat : ${allChats}">
                     <tr>
                         <th scope="row" th:text="${chat.name}">Vincent Delacour</th>
-                        <td><a th:href="|chats/${chat.id}|" class="btn btn-info">Le chat</a></td>
+                        <td>
+                            <a th:href="|chats/${chat.id}|" class="btn btn-info">Le chat</a>
+                            <a th:href="|chats/${chat.id}/delete|" class="btn btn-warning">delete</a>
+                        </td>
                     </tr>
 
                     </tbody>
