@@ -72,18 +72,28 @@
       <h1 class="titre">Le Chats</h1>
    </div>
    <ul class="chat-thread border rounded p-5">
-      <li class="chat-thread-item" th:each="message : ${allMessages}"><p th:text="${message.getText()}"></p></li>
-      <li class="chat-thread-item" th:each="message : ${allMessages}"><p th:text="${message.getText()}"></p></li>
+      <li class="chat-thread-item" th:each="message : ${allMessages}">
+         <p th:text="${message.getText()}"></p>
+         <!--<input type="hidden" th:value="${message.id}">-->
+      </li>
+      <li class="chat-thread-item" th:each="message : ${allMessages}">
+         <p th:text="${message.getText()}"></p>
+      </li>
    </ul>
-   <form class="chat-window">
+   <form class="chat-window" id="chat-window-form" method="post" th:action="|/chats/${groupChatId}/${userLogged.id}/addMessage|">
+<!--      <form class="chat-window" id="chat-window-form" method="post" th:action="@{/chats/${groupChatId}/${userLogged.id}/addMessage}">-->
       <input
          class="chat-window-message m-4"
-         name="chat-window-message"
+         name="messageText"
+         id="chat-window-message"
          type="text"
          autocomplete="off"
          autofocus
       />
+      <input type="submit" value="Enregistrer" class="btn btn-primary">
+
    </form>
+<!--   <input form="chat-window-form" type="submit" value="Enregistrer" class="btn btn-primary">-->
    <!-- partial -->
    <script>
       document
@@ -93,6 +103,17 @@
             e.preventDefault();
          }
          });
+
+/*      let form = document.getElementById("chat-window-form");
+      form.onsubmit = function (e) {
+         e.preventDefault();
+         fetch(form.action, {
+            method: "post",
+            body: new FormData(form)
+         }).then(response => {
+            // do something with the response...
+         });
+      }*/
    </script>
 
    <!--

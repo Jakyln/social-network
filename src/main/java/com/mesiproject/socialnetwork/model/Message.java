@@ -24,8 +24,7 @@ public class Message {
     @JoinColumn(name="ChatGroup_id", nullable=false)
     private ChatGroup chatGroup;
 
-    public Message(Long id, String text, Long userSender, ChatGroup chatGroup) {
-        this.id = id;
+    public Message(String text, Long userSender, ChatGroup chatGroup) {
         this.text = text;
         this.messageDate = LocalDateTime.now();
         this.userSender = userSender;

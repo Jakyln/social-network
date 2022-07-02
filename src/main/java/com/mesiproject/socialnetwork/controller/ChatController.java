@@ -11,10 +11,7 @@ import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -22,6 +19,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chats")
@@ -140,6 +138,32 @@ public class ChatController {
        model.addObject("allUsers",usersOfGroup);
        model.addObject("userLogged",userService.findById(userDetails.getId()));
        return model;
+    }
+
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/{groupChatId}/{userId}/addMessage",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public RedirectView addMessageToGroupChat(@PathVariable Long groupChatId, @PathVariable Long userId, String messageText){
+        ChatGroup chatGroup =  chatGroupService.findById(groupChatId);
+        if(messageText.trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+            try {
+                Message message = new Message(messageText,userId,chatGroup);
+                messageService.createMessage(message);
+            }
+            catch(Exception e){
+                throw new IllegalArgumentException("Problème lors de l'envoi du message");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Veuillez remplir le champ du texte du message");
+        }
+        return new RedirectView("/chats/" + chatGroup.getId());
+/*        System.out.println(messageText);
+        System.out.println(userId);
+        System.out.println(groupChatId);*/
     }
 
 }
