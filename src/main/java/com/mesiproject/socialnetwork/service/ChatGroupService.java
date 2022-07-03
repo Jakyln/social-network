@@ -45,6 +45,10 @@ public class ChatGroupService {
         chatGroupRepository.deleteById(id);
     }
 
+    public ChatGroupUser createChatGroupUser(ChatGroupUser chatGroupUser){
+        return chatGroupUserRepository.save(chatGroupUser);
+    }
+
 /*    public List<ChatGroup> getChatGroupsOfUser(Long id){
         List<ChatGroupUser> chatGroupUsers = chatGroupUserRepository.findAllByUserId(id);
         List<ChatGroup> chatGroups = new ArrayList<>();
