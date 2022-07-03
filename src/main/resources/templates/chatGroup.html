@@ -77,10 +77,10 @@
          </div>
       </div>
    </ul>
-   <form class="chat-window">
+   <form class="chat-window" id="chat-window-form" method="post" th:action="|/chats/${groupChatId}/${userLogged.id}/addMessage|">>
       <input
          class="chat-window-message m-4"
-         name="chat-window-message"
+         name="messageText"
          type="text"
          autocomplete="off"
          autofocus
