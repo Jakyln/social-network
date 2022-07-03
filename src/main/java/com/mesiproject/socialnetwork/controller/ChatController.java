@@ -1,6 +1,7 @@
 package com.mesiproject.socialnetwork.controller;
 
 import com.mesiproject.socialnetwork.model.ChatGroup;
+import com.mesiproject.socialnetwork.model.ChatGroupUser;
 import com.mesiproject.socialnetwork.model.Message;
 import com.mesiproject.socialnetwork.model.User;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
@@ -10,10 +11,7 @@ import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -21,6 +19,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chats")
@@ -75,11 +74,17 @@ public class ChatController {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/new"
+            value = "/newChat"
     )
     public ModelAndView newChat(){ // quand on va dans artists/new , ca nous redirige vers un détail d'artise vide. Ensuite le btn enregistrer utilise la fonction createArtist  (POST)
         ModelAndView model = new ModelAndView("newChat");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
         ChatGroup chatGroup  = new ChatGroup();
+        model.addObject("user", userDetails);
         model.addObject("chatGroup", chatGroup);
         return model;
     }
@@ -87,34 +92,30 @@ public class ChatController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "",
+            value = "/add",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    public RedirectView createChatGroup(ChatGroup chatGroup){
+    public RedirectView createChatGroup(Long userId, String chatName){
 
-        /*if(chatGroupService.checkExistsByName(chatGroup.getName())){
-            throw new EntityExistsException("Il existe déjà une discussion identique en base");
-        }*/
-
-        if(chatGroup.getName().trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+        if(chatName.trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+            ChatGroup chatGroup = new ChatGroup();
             try {
-                if(chatGroup.getId() == null){
-                    //Création
-                    chatGroup = chatGroupService.createChatGroup(chatGroup);
-                }
-                else {
-                    //Modification
-                    chatGroup = chatGroupService.updateChatGroup(chatGroup);
-                }
+                chatGroup.setName(chatName);
+                /*if(chatGroupService.checkExistsByName(chatGroup.getName())){
+                    throw new EntityExistsException("Il existe déjà une discussion identique en base");
+                }*/
+                chatGroup = chatGroupService.createChatGroup(chatGroup);
+                ChatGroupUser chatGroupUser = new ChatGroupUser(userId, chatGroup.getId());
+                chatGroupUser = chatGroupService.createChatGroupUser(chatGroupUser);
             }
             catch(Exception e){
-                throw new IllegalArgumentException("Problème lors de la sauvegarde de la discussion");
+                throw new IllegalArgumentException("Problème lors de la création de la discussion");
             }
         }
         else{
             throw new IllegalArgumentException("Veuillez remplir le champ du nom de l'artiste");
         }
-        return new RedirectView("/chats/" + chatGroup.getId());
+        return new RedirectView("/chats");
     }
 
 
@@ -137,6 +138,48 @@ public class ChatController {
        model.addObject("allUsers",usersOfGroup);
        model.addObject("userLogged",userService.findById(userDetails.getId()));
        return model;
+    }
+
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/{groupChatId}/{userId}/addMessage",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public RedirectView addMessageToGroupChat(@PathVariable Long groupChatId, @PathVariable Long userId, String messageText){
+        ChatGroup chatGroup =  chatGroupService.findById(groupChatId);
+        if(messageText.trim().length()>0){ //vérifie si le user n'a pas mis que des espaces
+            try {
+                Message message = new Message(messageText,userId,chatGroup);
+                messageService.createMessage(message);
+            }
+            catch(Exception e){
+                throw new IllegalArgumentException("Problème lors de l'envoi du message");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Veuillez remplir le champ du texte du message");
+        }
+        return new RedirectView("/chats/" + chatGroup.getId());
+/*        System.out.println(messageText);
+        System.out.println(userId);
+        System.out.println(groupChatId);*/
+    }
+
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/{id}/delete"
+    )
+    public RedirectView deleteChatGroup(@PathVariable Long id) {
+
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        chatGroupService.deleteChatGroup(id);
+        return new RedirectView("/chats");
     }
 
 }

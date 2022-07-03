@@ -110,6 +110,21 @@ public class UserController {
         return new RedirectView("/user/" + user.getId());*/
     }
 
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "friends/{id}/delete"
+    )
+    public RedirectView deleteFriend(@PathVariable Long id) {
+
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        friendsService.deleteFriend(userDetails.getId(), id);
+        return new RedirectView("/user/" + userDetails.getId() + "/friends");
+    }
+
 
     @RequestMapping(
             method = RequestMethod.GET,
