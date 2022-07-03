@@ -77,21 +77,20 @@ body {
 .chat-thread li {
     animation: show-chat-odd 0.15s 1 ease-in;
     -moz-animation: show-chat-odd 0.15s 1 ease-in;
-    -webkit-animation: show-chat-odd 0.15s 1 ease-in;
+    -webkit-animation: show-chat-odd 0.15s 1 ease-in;}
+
+.sender li{
+    float: right;
+    margin-right: 80px;
     color: #0AD5C1;
 }
 
-.receiver li{
-    float: right;
-    margin-right: 80px;
-}
-
-.receiver li:before {
+.sender li:before {
     right: -80px;
     background-image: url(https://image.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg);
 }
 
-.receiver li:after {
+.sender li:after {
     border-right: 15px solid transparent;
     right: -15px;
 }
@@ -103,20 +102,20 @@ body {
     animation: show-chat-even 0.15s 1 ease-in;
     -moz-animation: show-chat-even 0.15s 1 ease-in;
     -webkit-animation: show-chat-even 0.15s 1 ease-in;
+}
+
+.receiver li{
+    float: left;
+    margin-left: 80px;
     color: #0EC879;
 }
 
-.sender li{
-    float: left;
-    margin-left: 80px;
-}
-
-.sender li:before {
+.receiver li:before {
     left: -80px;
     background-image: url(https://image.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg);
 }
 
-.sender li:after {
+.receiver li:after {
     border-left: 15px solid transparent;
     left: -15px;
 }

@@ -73,7 +73,7 @@
    </div>
    <ul class="chat-thread border rounded p-5" >
       <div th:each="message : ${allMessages}">
-         <div class="sender" th:if="${message.sender == userLogged.id }">      
+         <div class="sender" th:if="${message.sender == userLogged.id }">
             <li class="chat-thread-item" ><p th:text="${message.getText()}"></p></li>
          </div>
          <div class="receiver"th:unless="${message.sender == userLogged.id}">
