@@ -30,8 +30,18 @@ body {
 }
 
 .navbar{
-    margin-bottom: 10vh;
+    margin-bottom: 5vh;
 }
+
+.titre{
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
 .chat-thread {
     margin: 24px auto 0 auto;
     padding-top: 12px;
@@ -212,19 +222,5 @@ body {
     }
 }
 
-
-
-
-/* PAGE DE LISTE DISC */
-
-.titre{
-    text-align: center;
-    color: #ffffff;
-    margin-bottom: 3vh;
-}
-
-.btnamis{
-    margin-bottom: 3vh;
-}
 
 

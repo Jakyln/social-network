@@ -32,40 +32,15 @@
    ></script>
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg bg-light justify-content-center">
-      <div class="container-fluid">
-         <a class="navbar-brand">Social-Network</a>
-         <button
-         class="navbar-toggler"
-         type="button"
-         data-bs-toggle="collapse"
-         data-bs-target="#navbarTogglerDemo02"
-         aria-controls="navbarTogglerDemo02"
-         aria-expanded="false"
-         aria-label="Toggle navigation"
-         >
-         <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-               <a
-               class="nav-link active"
-               aria-current="page"
-               onclick="history.go(-1);"
-               href="/chats"
-               >Retour</a
-               >
-            <li class="nav-item">
-               <a class="nav-link disabled">Profil</a>
-            </li>
-         </ul>
-         </div>
-      </div>
-   </nav>
+<nav class="navbar navbar-expand-lg bg-light justify-content-center">
+   <div class="container-fluid">
+      <a class="navbar-brand" href="/welcome">Social-Network</a>
+   </div>
+</nav>
 
    <div class="container">
       <h1 class="titre">Le Chats</h1>
+      <a style="width: 129px; margin-bottom: 30px" class="btn btn-danger"  type="button" onclick="history.go(-1);">Retour</a>
    </div>
    <ul class="chat-thread border rounded p-5" >
       <div th:each="message : ${allMessages}">
