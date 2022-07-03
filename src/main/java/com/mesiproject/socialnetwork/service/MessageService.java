@@ -61,4 +61,8 @@ public class MessageService {
         }
         return chatGroup.get().getMessages();
     }
+
+/*    public Message saveMessage(){
+
+    }*/
 }

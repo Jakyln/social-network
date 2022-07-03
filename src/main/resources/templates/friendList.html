@@ -23,7 +23,7 @@
 </head>
 <body>
 <div>
-
+<!---->
     <div class="container">
         <div class="row">
             <button type="button" onclick="history.go(-1);">GO BACK</button>
@@ -42,7 +42,10 @@
                     <tbody th:each="friend : ${friends}">
                     <tr>
                         <th scope="row" th:text="${friend.getFirstName()}">Vincent Delacour</th>
-                        <td><a href="#" class="btn btn-primary">Profil</a></td>
+                        <td>
+                            <a th:href="|/user/friends/${friend.getId()}/delete|" class="btn btn-danger">Supprimer</a>
+                            <a th:href="|/user/${friend.id}|" class="btn btn-info">Profil</a>
+                        </td>
                     </tr>
 
                     </tbody>
