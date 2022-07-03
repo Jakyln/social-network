@@ -40,9 +40,9 @@
 
    <div class="container">
       <h1 class="titre">Le Chats</h1>
-      <a style="width: 129px; margin-bottom: 30px" class="btn btn-danger"  type="button" onclick="history.go(-1);">Retour</a>
+      <a style="width: 129px; margin-bottom: 30px" class="btn btn-danger"  type="button" th:href="@{/chats}" onclick="@{/chats}" href="#">Retour</a>
    </div>
-   <ul class="chat-thread border rounded p-5" >
+   <ul class="chat-thread border rounded p-5" id="chat">
       <div th:each="message : ${allMessages}">
          <div class="sender" th:if="${message.sender == userLogged.id }">
             <li class="chat-thread-item" ><p th:text="${message.getText()}"></p></li>
@@ -70,6 +70,9 @@
             e.preventDefault();
          }
          });
+
+      let chat = document.getElementById('chat');
+      chat.scrollTop = chat.scrollHeight;
    </script>
 </body>
 </html>
