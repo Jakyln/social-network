@@ -74,43 +74,54 @@ body {
     border-top: 15px solid rgba(25, 147, 147, 0.2);
 }
 
-.chat-thread li:nth-child(odd) {
+.chat-thread li {
     animation: show-chat-odd 0.15s 1 ease-in;
     -moz-animation: show-chat-odd 0.15s 1 ease-in;
     -webkit-animation: show-chat-odd 0.15s 1 ease-in;
-    float: right;
-    margin-right: 80px;
     color: #0AD5C1;
 }
 
-.chat-thread li:nth-child(odd):before {
+.receiver li{
+    float: right;
+    margin-right: 80px;
+}
+
+.receiver li:before {
     right: -80px;
     background-image: url(https://image.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg);
 }
 
-.chat-thread li:nth-child(odd):after {
+.receiver li:after {
     border-right: 15px solid transparent;
     right: -15px;
 }
 
-.chat-thread li:nth-child(even) {
+
+
+
+.chat-thread li {
     animation: show-chat-even 0.15s 1 ease-in;
     -moz-animation: show-chat-even 0.15s 1 ease-in;
     -webkit-animation: show-chat-even 0.15s 1 ease-in;
-    float: left;
-    margin-left: 80px;
     color: #0EC879;
 }
 
-.chat-thread li:nth-child(even):before {
+.sender li{
+    float: left;
+    margin-left: 80px;
+}
+
+.sender li:before {
     left: -80px;
     background-image: url(https://image.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg);
 }
 
-.chat-thread li:nth-child(even):after {
+.sender li:after {
     border-left: 15px solid transparent;
     left: -15px;
 }
+
+
 
 .chat-window {
     position: fixed;
