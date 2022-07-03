@@ -54,7 +54,7 @@
                aria-current="page"
                onclick="history.go(-1);"
                href="#"
-               >Acceuil</a
+               >Accueil</a
                >
             </li>
             <li class="nav-item">
@@ -71,35 +71,25 @@
    <div class="container">
       <h1 class="titre">Le Chats</h1>
    </div>
-   <ul class="chat-thread border rounded p-5">
-      <li class="chat-thread-item" th:each="message : ${allMessages}">
-         <div th:if="${message.sender == userLogged.id }" style="color:green!important;">
-            <p th:text="${message.getText()}"></p>
+   <ul class="chat-thread border rounded p-5" >
+      <div th:each="message : ${allMessages}">
+         <div class="sender" th:if="${message.sender == userLogged.id }">      
+            <li class="chat-thread-item" ><p th:text="${message.getText()}"></p></li>
          </div>
-         <div th:unless="${message.sender == userLogged.id }" >
-            <p th:text="${message.getText()}"></p>
+         <div class="receiver"th:unless="${message.sender == userLogged.id}">
+            <li class="chat-thread-item" ><p th:text="${message.getText()}"></p></li>
          </div>
-
-      <!--<input type="hidden" th:value="${message.id}">-->
-      </li>
-<!--      <li class="chat-thread-item" th:each="message : ${allMessages}">
-         <p th:text="${message.getText()}"></p>
-      </li>-->
+      </div>
    </ul>
-   <form class="chat-window" id="chat-window-form" method="post" th:action="|/chats/${groupChatId}/${userLogged.id}/addMessage|">
-<!--      <form class="chat-window" id="chat-window-form" method="post" th:action="@{/chats/${groupChatId}/${userLogged.id}/addMessage}">-->
+   <form class="chat-window">
       <input
          class="chat-window-message m-4"
-         name="messageText"
-         id="chat-window-message"
+         name="chat-window-message"
          type="text"
          autocomplete="off"
          autofocus
       />
-      <input type="submit" value="Enregistrer" class="btn btn-primary">
-
    </form>
-<!--   <input form="chat-window-form" type="submit" value="Enregistrer" class="btn btn-primary">-->
    <!-- partial -->
    <script>
       document
@@ -109,65 +99,6 @@
             e.preventDefault();
          }
          });
-
-/*      let form = document.getElementById("chat-window-form");
-      form.onsubmit = function (e) {
-         e.preventDefault();
-         fetch(form.action, {
-            method: "post",
-            body: new FormData(form)
-         }).then(response => {
-            // do something with the response...
-         });
-      }*/
    </script>
-
-   <!--
-      <div class="row">
-         <div class="col-lg-12">
-               
-               <table class="table table-hover table-striped">
-                  <thead>
-                  <tr>
-                     <th scope="col">Nom
-                           <span class="glyphicon glyphicon-chevron-up"></span>
-                     </th>
-                     <th scope="col"></th>
-                  </tr>
-                  </thead>
-                  <tbody th:each="message : ${allMessages}">
-                  <div th:if="${message.sender == userLogged.id }" >
-                     <tr class="col-lg-2 bg-primary">
-                           <th scope="row" th:text="${message.getText()}"></th>
-                           <div th:each="user : ${allUsers}">
-                              <div th:if="${message.sender == user.id }" >
-                                 <td> <span th:text="${user.firstName}" > </span> </td>
-                              </div>
-                           </div>
-                     </tr>
-                  </div>
-                  <div th:unless="${message.sender == userLogged.id}" >
-                     <tr class="col-lg-9 bg-secondary">
-                           <th scope="row" th:text="${message.getText()}"></th>
-                           <div th:each="user : ${allUsers}">
-                              <div th:if="${message.sender == user.id }" >
-                                 <td> <span th:text="${user.firstName}" > </span> </td>
-                              </div>
-                           </div>
-                     </tr>
-                  </div>
-
-
-
-                  </tbody>
-               </table>
-               <div class="row">
-
-               </div>
-         </div>
-      </div>
-   </div>
--->
-
 </body>
 </html>
