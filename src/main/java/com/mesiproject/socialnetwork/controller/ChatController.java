@@ -1,11 +1,9 @@
 package com.mesiproject.socialnetwork.controller;
 
-import com.mesiproject.socialnetwork.model.ChatGroup;
-import com.mesiproject.socialnetwork.model.ChatGroupUser;
-import com.mesiproject.socialnetwork.model.Message;
-import com.mesiproject.socialnetwork.model.User;
+import com.mesiproject.socialnetwork.model.*;
 import com.mesiproject.socialnetwork.security.CustomUserDetails;
 import com.mesiproject.socialnetwork.service.ChatGroupService;
+import com.mesiproject.socialnetwork.service.ChatGroupUserService;
 import com.mesiproject.socialnetwork.service.MessageService;
 import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +29,12 @@ public class ChatController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private ChatGroupUserService chatGroupUserService;
 
-    //A enlever, il ne faut pas abuser de l'injection de services dans d'autre services
     @Autowired
     private UserServiceImpl userService;
+
 
 
 /*    @RequestMapping(
@@ -171,14 +171,22 @@ public class ChatController {
             method = RequestMethod.GET,
             value = "/{id}/delete"
     )
-    public RedirectView deleteChatGroup(@PathVariable Long id) {
+    public RedirectView deleteUserFromChatGroup(@PathVariable Long id) {
 
         CustomUserDetails userDetails =
                 (CustomUserDetails) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal();
-        chatGroupService.deleteChatGroup(id);
+        ChatGroupUserId chatGroupUserId = new ChatGroupUserId(userDetails.getId(),id);
+
+        List<User> users= chatGroupService.findAllUsersOfChatGroup(id);
+        if(users.size() == 1){
+            chatGroupService.deleteChatGroup(id);
+        }
+        else{
+            chatGroupUserService.deleteChatGroupUser(chatGroupUserId);
+        }
         return new RedirectView("/chats");
     }
 
