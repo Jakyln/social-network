@@ -23,7 +23,7 @@
 </head>
 <body>
 <div>
-<!---->
+    <!---->
     <nav class="navbar navbar-expand-lg bg-light justify-content-center">
         <div class="container-fluid">
             <a class="navbar-brand" href="/welcome">Social-Network</a>
@@ -48,8 +48,7 @@
                     <tr>
                         <th style="color: white" scope="row" th:text="${friend.getFirstName()}">Vincent Delacour</th>
                         <td>
-                            <a th:href="|/user/friends/${friend.getId()}/delete|" class="btn btn-danger">Supprimer</a>
-                            <a th:href="|/user/${friend.id}|" class="btn btn-info">Profil</a>
+                            <a th:href="|/chats/addUser/${friend.getId}/${chatGroupId}|" class="btn btn-info">Ajouter à la conversation</a>
                         </td>
                     </tr>
 

@@ -6,22 +6,28 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
+
     private LocalDateTime messageDate;
+
+    /*@ManyToOne
+    @JoinColumn(name="UserSender_id", nullable=false)*/
+    @Column(name = "UserSender_id")
+    private Long userSender; // mettre plus tard une list de User destinataires ?
+
     @ManyToOne
-    private User sender; // mettre plus tard une list de User destinataires ?
-    @ManyToOne
+    @JoinColumn(name="ChatGroup_id", nullable=false)
     private ChatGroup chatGroup;
 
-    public Message(Long id, String text, Date messageDate, User sender, ChatGroup chatGroup) {
-        this.id = id;
+    public Message(String text, Long userSender, ChatGroup chatGroup) {
         this.text = text;
         this.messageDate = LocalDateTime.now();
-        this.sender = sender;
+        this.userSender = userSender;
         this.chatGroup = chatGroup;
     }
 
@@ -45,12 +51,12 @@ public class Message {
     }
 
 
-    public User getSender() {
-        return sender;
+    public Long getSender() {
+        return userSender;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSender(Long userSender) {
+        this.userSender = userSender;
     }
 
     public ChatGroup getChatGroup() {
@@ -68,12 +74,12 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return Objects.equals(id, message.id) && Objects.equals(text, message.text) && Objects.equals(messageDate, message.messageDate) && Objects.equals(sender, message.sender) && Objects.equals(chatGroup, message.chatGroup);
+        return Objects.equals(id, message.id) && Objects.equals(text, message.text) && Objects.equals(messageDate, message.messageDate) && Objects.equals(userSender, message.userSender) && Objects.equals(chatGroup, message.chatGroup);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, messageDate, sender, chatGroup);
+        return Objects.hash(id, text, messageDate, userSender, chatGroup);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class Message {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", messageDate=" + messageDate +
-                ", sender=" + sender +
+                ", userSender=" + userSender +
                 ", chatGroup=" + chatGroup +
                 '}';
     }
