@@ -25,5 +25,9 @@ public class ChatGroupUserService {
         chatGroupUserRepository.deleteById(chatGroupUserId);
     }
 
+    public Boolean checkChatGroupUserLink(ChatGroupUserId chatGroupUserId){
+        return chatGroupUserRepository.existsById(chatGroupUserId);
+    }
+
 
 }
