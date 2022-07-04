@@ -6,6 +6,7 @@ import com.mesiproject.socialnetwork.service.ChatGroupService;
 import com.mesiproject.socialnetwork.service.ChatGroupUserService;
 import com.mesiproject.socialnetwork.service.MessageService;
 import com.mesiproject.socialnetwork.service.impl.UserServiceImpl;
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -89,6 +90,22 @@ public class ChatController {
         return model;
     }
 
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value ="/addFriend/{chatGroupId}"
+    )
+    public ModelAndView allFriends(@PathVariable Long chatGroupId){
+        ModelAndView model = new ModelAndView("friendListAddToChatGroup");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+        model.addObject("chatGroupId", chatGroupId);
+        model.addObject("friends",userService.findById(userDetails.getId()).getFriends());
+        return model;
+    }
+
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -118,6 +135,28 @@ public class ChatController {
         return new RedirectView("/chats");
     }
 
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/addUser/{userId}/{chatGroupId}"
+    )
+    public RedirectView addUserToChatGroup(@PathVariable Long userId, @PathVariable Long chatGroupId){
+        try {
+            chatGroupService.findById(chatGroupId);
+            userService.findById(userId);
+            ChatGroupUserId chatGroupUserId = new ChatGroupUserId(userId, chatGroupId);
+            if (!chatGroupUserService.checkChatGroupUserLink(chatGroupUserId)){
+                ChatGroupUser chatGroupUser = new ChatGroupUser(userId, chatGroupId);
+                chatGroupService.createChatGroupUser(chatGroupUser);
+            }
+            return new RedirectView("/chats/" + chatGroupId);
+        }
+        catch(Exception e){
+            System.out.println(e);
+            throw new IllegalArgumentException("Problème lors de l'ajout de l'utilisateur");
+        }
+
+    }
+
 
    @RequestMapping(
             value = "/{groupChatId}",
@@ -137,6 +176,7 @@ public class ChatController {
        model.addObject("allMessages",messageService.findAllMessagesOfGroupChat(groupChatId));
        model.addObject("allUsers",usersOfGroup);
        model.addObject("userLogged",userService.findById(userDetails.getId()));
+       model.addObject("chatGroupId", groupChatId);
        return model;
     }
 

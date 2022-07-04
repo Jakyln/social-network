@@ -41,6 +41,7 @@
    <div class="container">
       <h1 class="titre">Le Chats</h1>
       <a style="width: 129px; margin-bottom: 30px" class="btn btn-danger"  type="button" th:href="@{/chats}" onclick="@{/chats}" href="#">Retour</a>
+      <a style="width: 129px; margin-bottom: 30px" class="btn btn-info"  type="button" th:href="|/chats/addFriend/${chatGroupId}|" onclick="@{/chats/addFriend}" href="#">Ajouter un ami</a>
    </div>
    <ul class="chat-thread border rounded p-5" id="chat">
       <div th:each="message : ${allMessages}">
