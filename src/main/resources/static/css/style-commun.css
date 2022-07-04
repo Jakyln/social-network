@@ -17,5 +17,9 @@ body {
     font-weight: bold;
     color: #ffffff;
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+.btnamis{
+    margin-bottom: 3vh;
 }
